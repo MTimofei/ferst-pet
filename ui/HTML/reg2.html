@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация на сайте</title>
+  <style>
+    /* Стили для страницы */
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #eee;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-top: 50px;
+      text-align: center;
+      text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
+    }
+
+    form {
+      margin: 0 auto;
+      padding: 20px;
+      max-width: 500px;
+      background-color: rgba(0,0,0,0.5);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+      overflow: hidden;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      display: block;
+      margin-bottom: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      border: none;
+      border-radius: 3px;
+      box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
+      background-color: rgba(0,0,0,0.3);
+      color: #fff;
+    }
+
+    ::placeholder {
+      color: #ccc;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #eee;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #74C374;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #ccc;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+    }
+
+    a {
+      color: #fff;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<h1>Регистрация на сайте</h1>
+<form action="/process" method="post">
+  <!-- Поле для ввода ФИО -->
+  <label for="full-name">ФИО:</label>
+  <input type="text" id="full-name" name="full-name" required autofocus>
+
+  <!-- Поле для ввода логина -->
+  <label for="name">Логин:</label>
+  <input type="text" id="name" name="name" required>
+
+  <!-- Поле для ввода email -->
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <!-- Поле для ввода пароля -->
+  <label for="password">Пароль:</label>
+  <input type="password" id="password" name="password" required>
+
+  <!-- Поле для подтверждения пароля -->
+  <label for="confirm-password">Повторите пароль:</label>
+  <input type="password" id="confirm-password" name="confirm-password" required>
+
+  <!-- Флажок для подтверждения согласия с условиями использования сайта -->
+  <input type="checkbox" id="agree" name="agree" required>
+  <label for="agree">Я согласен с условиями использования сайта</label>
+
+  <!-- Кнопка для отправки формы -->
+  <input type="submit" value="Зарегистрироваться">
+</form>
+
+<!-- Ссылка для перехода на страницу входа -->
+<p>Уже зарегистрированы? <a href="login.html">Войти</a></p>
+</body>
+</html>
