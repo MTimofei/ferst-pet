@@ -1,6 +1,6 @@
 package regout
 
-type regDataOut struct {
+type RegDataOut struct {
 	loginname    string
 	email        string
 	passwordhash string
