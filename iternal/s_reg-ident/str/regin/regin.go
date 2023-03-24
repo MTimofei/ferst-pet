@@ -2,6 +2,7 @@ package regin
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -11,16 +12,19 @@ type RegDataIn struct {
 	email     string
 }
 
-func New(r *http.Request) (rd *RegDataIn, err error) {
+func New(r *http.Request) (*RegDataIn, error) {
+	log.Println("01data transmission")
 	if r.Method != "POST" {
 		err := fmt.Errorf("method not post")
 		return nil, err
 	}
+	log.Println("02data transmission")
 	if len(r.FormValue("name")) == 0 || len(r.FormValue("password")) == 0 || len(r.FormValue("email")) == 0 {
 		err := fmt.Errorf("not se value")
 		return nil, err
 	}
-	//var rd = &regDataIn{}
+	log.Println("03data transmission")
+	var rd = &RegDataIn{}
 	rd.loginname = r.FormValue("name")
 	rd.password = r.FormValue("password")
 	rd.email = r.FormValue("email")
@@ -28,7 +32,7 @@ func New(r *http.Request) (rd *RegDataIn, err error) {
 	return rd, nil
 }
 
-func (rd *RegDataIn) GetPass() (passb []byte) {
-	passb = []byte(rd.password)
-	return passb
+func (rd *RegDataIn) GetPass() (pass []byte) {
+	pass = []byte(rd.password)
+	return pass
 }

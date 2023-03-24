@@ -7,9 +7,8 @@ import (
 )
 
 func ServesError(w http.ResponseWriter, err error) {
-	if err != nil {
-		http.Error(w, fmt.Sprintf("serve err:%v", err), http.StatusMethodNotAllowed)
-		log.Println(err)
-		return
-	}
+
+	log.Println(err)
+	http.Error(w, fmt.Sprintf("serve err:%v", err), http.StatusMethodNotAllowed)
+
 }

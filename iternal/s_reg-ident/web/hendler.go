@@ -13,27 +13,32 @@ import (
 func handlerIdent(w http.ResponseWriter, r *http.Request) {
 	log.Println("connection")
 	templ, err := template.ParseFiles("ui/HTML/reg3.html")
-	help.ServesError(w, err)
+	if err != nil {
+		help.ServesError(w, err)
+		return
+	}
 	err = templ.Execute(w, nil)
-	help.ServesError(w, err)
+	if err != nil {
+		help.ServesError(w, err)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
 func handlerPost(w http.ResponseWriter, r *http.Request) {
 	log.Println("data transmission")
-	//salt := key.GenerateDenamicSolt()
 	rd, err := regin.New(r)
-	help.ServesError(w, err)
+	log.Println("1data transmission")
+	if err != nil {
+		help.ServesError(w, err)
+		return
+	}
+	log.Println("2data transmission")
 	salt := salt.GenerateSalt()
+	log.Println("3data transmission")
 	key := salt.GeneraterKey(rd.GetPass())
-	help.ServesError(w, err)
-	fmt.Printf("%b", key)
-	//if err != nil {
-	//	w.WriteHeader(http.StatusServiceUnavailable)
-	//	log.Println(err)
-	//	return
-	//}
-	//rd.PreparationRegistratDate(salt)
+	log.Println("4data transmission")
+	fmt.Printf("%v", key)
 
 	w.WriteHeader(http.StatusOK)
 }
