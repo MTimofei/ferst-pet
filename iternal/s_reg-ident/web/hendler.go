@@ -26,19 +26,15 @@ func handlerIdent(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerPost(w http.ResponseWriter, r *http.Request) {
-	log.Println("data transmission")
 	rd, err := regin.New(r)
-	log.Println("1data transmission")
 	if err != nil {
 		help.ServesError(w, err)
 		return
 	}
-	log.Println("2data transmission")
 	salt := salt.GenerateSalt()
-	log.Println("3data transmission")
 	key := salt.GeneraterKey(rd.GetPass())
-	log.Println("4data transmission")
 	fmt.Printf("%v", key)
 
+	fmt.Fprintf(w, "%s", http.StatusText(http.StatusOK))
 	w.WriteHeader(http.StatusOK)
 }
