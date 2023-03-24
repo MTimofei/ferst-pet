@@ -4,8 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"ser_identification/iternal/s_reg-ident/key"
-	"ser_identification/iternal/s_reg-ident/str/reg"
 )
 
 func handlerIdent(w http.ResponseWriter, r *http.Request) {
@@ -25,14 +23,14 @@ func handlerIdent(w http.ResponseWriter, r *http.Request) {
 
 func handlerPost(w http.ResponseWriter, r *http.Request) {
 	log.Println("data transmission")
-	dynamic := key.GenerateDenamicSolt()
-	rd, err := reg.New(r)
-	if err != nil {
-		w.WriteHeader(http.StatusServiceUnavailable)
-		log.Println(err)
-		return
-	}
-	rd.PreparationRegistratDate(dynamic)
+	//salt := key.GenerateDenamicSolt()
+	//rd, err := regin.New(r)
+	//if err != nil {
+	//	w.WriteHeader(http.StatusServiceUnavailable)
+	//	log.Println(err)
+	//	return
+	//}
+	//rd.PreparationRegistratDate(salt)
 
 	w.WriteHeader(http.StatusOK)
 }
