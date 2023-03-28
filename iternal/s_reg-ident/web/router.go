@@ -2,7 +2,8 @@ package web
 
 import (
 	"net/http"
-	"ser_identification/iternal/s_reg-ident/web/urlcheck"
+
+	"pet/iternal/s_reg-ident/web/urlcheck"
 )
 
 func Router() (mux *http.ServeMux) {

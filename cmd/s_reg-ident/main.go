@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"ser_identification/iternal/s_reg-ident/web"
+	"pet/iternal/s_reg-ident/web"
 )
 
 var (
