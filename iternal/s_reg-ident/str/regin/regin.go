@@ -35,3 +35,7 @@ func (rd *RegDataIn) GetPass() (pass []byte) {
 	pass = []byte(rd.password)
 	return pass
 }
+
+func (rd *RegDataIn) GetRDIn() (logname, email string) {
+	return rd.loginname, rd.email
+}

@@ -1,4 +1,4 @@
-package help
+package err
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 )
 
 func ServesError(w http.ResponseWriter, err error) {
-
 	log.Println(err)
 	http.Error(w, fmt.Sprintf("serve err:%v", err), http.StatusMethodNotAllowed)
 
