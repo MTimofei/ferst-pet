@@ -18,11 +18,6 @@ func New(r *http.Request) (*RegDataIn, error) {
 		return nil, err
 	}
 
-	if len(r.FormValue("name")) == 0 || len(r.FormValue("password")) == 0 || len(r.FormValue("email")) == 0 {
-		err := fmt.Errorf("not se value")
-		return nil, err
-	}
-
 	var rd = &RegDataIn{}
 	rd.loginname = r.FormValue("name")
 	rd.password = r.FormValue("password")
