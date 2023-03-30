@@ -1,7 +1,6 @@
 package salt
 
 import (
-	"fmt"
 	rand2 "math/rand"
 	"time"
 
@@ -20,7 +19,6 @@ func GenerateSalt() *Salt {
 	for i := 0; i < 8; i++ {
 		rand2.Seed(time.Now().UnixNano())
 		randNum = uint8(rand2.Intn(255))
-		fmt.Println(randNum)
 		salt.dynamic = append(salt.dynamic, randNum)
 	}
 	return salt
