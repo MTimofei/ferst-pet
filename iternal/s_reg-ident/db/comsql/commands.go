@@ -11,12 +11,13 @@ import (
 	"pet/iternal/s_reg-ident/str/salt"
 )
 
-func CheckUnquenessLogin(db *sql.DB, r *http.Request) (err error) {
+func CheckUinquenessLogin(db *sql.DB, r *http.Request) (err error) {
 	query := fmt.Sprintf(`SELECT log_name FROM account WHERE log_name = '%s';`, r.FormValue("name"))
 	ra, err := db.Query(query)
 	if err != nil {
 		return err
 	}
+	//fmt.Println(ra.Next())
 	if ra.Next() {
 		return errors.New("login already exists")
 	} else {
@@ -24,7 +25,7 @@ func CheckUnquenessLogin(db *sql.DB, r *http.Request) (err error) {
 	}
 }
 
-func CheckUnquenessEmail(db *sql.DB, r *http.Request) (err error) {
+func CheckUinquenessEmail(db *sql.DB, r *http.Request) (err error) {
 	query := fmt.Sprintf(`SELECT email FROM account WHERE email = '%s';`, r.FormValue("email"))
 	ra, err := db.Query(query)
 	if err != nil {

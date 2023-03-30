@@ -13,24 +13,19 @@
 
     h1 {
       font-size: 36px;
-      
+      margin-top: 50px;
       text-align: center;
       text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
     }
 
     form {
+      margin: 0 auto;
       padding: 20px;
       max-width: 500px;
       background-color: rgba(0,0,0,0.5);
+      border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
       overflow: hidden;
-      position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 400px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
     }
 
     label {
@@ -101,33 +96,46 @@
   </style>
 </head>
 <body>
-<h1>Регистрация на сайте</h1>
-<form action="/reg/process" method="POST">
-  <!-- Поле для ввода логина -->
-  <label for="name">Логин:</label>
-  <input type="text" id="name" name="name" required>
+    <h1>Статусы</h1>
+    <form action="/main">
+    <div id="status">
+      <!-- Здесь будет отображаться статус или сообщение об ошибке -->
+    </div>
+    
+   
+    <ul id="errors">
+      <!-- Здесь будут отображаться ошибки -->
+    </ul>
+    <script>
+      // Получаем параметры из URL-адреса
+      const params = new URLSearchParams(window.location.search);
 
-  <!-- Поле для ввода email -->
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" required>
+      // Проверяем, есть ли параметр status
+      if (params.has('status')) {
+        const statusDiv = document.getElementById('status');
+        const status = params.get('status');
 
-  <!-- Поле для ввода пароля -->
-  <label for="password">Пароль:</label>
-  <input type="password" id="password" name="password" required>
+        if (status === 'success') {
+          statusDiv.innerHTML = '<p style="color: green;">Операция выполнена успешно!</p>';
+        } else if (status === 'error') {
+          const errorMessage = params.get('message');
+          statusDiv.innerHTML = '<p style="color: red;">Ошибка: ' + errorMessage + '</p>';
+        }
+      }
 
-  <!-- Поле для подтверждения пароля
-  <label for="confirm-password">Повторите пароль:</label>
-  <input type="password" id="confirm-password" name="confirm-password" required>
--->
-  <!-- Флажок для подтверждения согласия с условиями использования сайта -->
-  <input type="checkbox" id="agree" name="agree" required>
-  <label for="agree">Я согласен с условиями использования сайта</label>
+      // Проверяем, есть ли параметр error
+      if (params.has('error')) {
+        const errorList = document.getElementById('errors');
+        const errors = params.getAll('error');
 
-  <!-- Кнопка для отправки формы -->
-  <button value="Зарегистрироваться">Зарегистрироваться</button>
-</form>
-
-<!-- Ссылка для перехода на страницу входа -->
-<p>Уже зарегистрированы? <a href="/">Войти</a></p>
-</body>
+        for (let i = 0; i < errors.length; i++) {
+          const errorItem = document.createElement('li');
+          errorItem.textContent = errors[i];
+          errorList.appendChild(errorItem);
+        }
+      }
+    </script>
+    <button value="Главная страница">Главная страница</button>
+    </form>
+  </body>
 </html>

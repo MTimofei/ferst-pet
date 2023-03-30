@@ -28,19 +28,32 @@ func handlerIdent(w http.ResponseWriter, r *http.Request) {
 }
 
 func (con *ConnectDB) handlerPost(w http.ResponseWriter, r *http.Request) {
+	log.Println("process")
+	templ, err := template.ParseFiles("ui/HTML/regstat2.html")
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
+
+	err = templ.Execute(w, nil)
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
+
 	if len(r.FormValue("name")) == 0 || len(r.FormValue("password")) == 0 || len(r.FormValue("email")) == 0 {
 		err := fmt.Errorf("not se value")
 		myerr.ServesError(w, err)
 		return
 	}
 
-	err := comsql.CheckUnquenessLogin(con.MySQL, r)
+	err = comsql.CheckUinquenessLogin(con.MySQL, r)
 	if err != nil {
 		myerr.ServesError(w, err)
 		return
 	}
 
-	err = comsql.CheckUnquenessEmail(con.MySQL, r)
+	err = comsql.CheckUinquenessEmail(con.MySQL, r)
 	if err != nil {
 		myerr.ServesError(w, err)
 		return
@@ -62,6 +75,7 @@ func (con *ConnectDB) handlerPost(w http.ResponseWriter, r *http.Request) {
 		myerr.ServesError(w, err)
 		return
 	}
+
 	fmt.Fprintf(w, "%s", http.StatusText(http.StatusOK))
 	w.WriteHeader(http.StatusOK)
 }

@@ -6,20 +6,25 @@ import (
 	"log"
 	"net/http"
 	"pet/iternal/s_reg-ident/web"
-	"pet/pkg/mysqlcon"
+	"pet/pkg/sql/mysqlcon"
 )
 
 var (
 	addr      = flag.String("addr", "localhost:8889", "adderss server")
-	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@ppa?parseTime=true", "adderss mysql")
+	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@/ppa?parseTime=true", "adderss mysql")
 )
 
 func main() {
 	flag.Parse()
 	dbcon, err := mysqlcon.OpenMySQLDB(addrMySQL)
-	log.Fatal(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer dbcon.Close()
 	con := web.ConnectDB{MySQL: dbcon}
 
-	log.Fatal(http.ListenAndServe(*addr, con.Router()))
+	err = http.ListenAndServe(*addr, con.Router())
+	if err != nil {
+		log.Fatal(err)
+	}
 }
