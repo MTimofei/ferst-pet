@@ -111,12 +111,3 @@ func TestCheckUinquessEmail(t *testing.T) {
 		})
 	}
 }
-
-// func TestSendRegdata(t *testing.T) {
-// 	db, mock, err := sqlmock.New()
-//     if err != nil {
-//         t.Fatalf("error creating sqlmock DB: %v", err)
-//     }
-//     defer db.Close()
-
-// }

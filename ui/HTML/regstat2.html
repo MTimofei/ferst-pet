@@ -61,39 +61,40 @@
       <h1>Ошибки и статусы</h1>
       <div class="status">
         <!-- Здесь будет отображаться статус или сообщение об ошибке -->
+        {{.}}
       </div>
       <ul class="error-list">
         <!-- Здесь будут отображаться ошибки -->
       </ul>
     </div>
-    <script>
-      // Получаем параметры из URL-адреса
-      const params = new URLSearchParams(window.location.search);
+    <!--script>
+      // // Получаем параметры из URL-адреса
+      // const params = new URLSearchParams(window.location.search);
 
-      // Проверяем, есть ли параметр status
-      if (params.has('status')) {
-        const statusDiv = document.querySelector('.status');
-        const status = params.get('status');
+      // // Проверяем, есть ли параметр status
+      // if (params.has('status')) {
+      //   const statusDiv = document.querySelector('.status');
+      //   const status = params.get('status');
 
-        if (status === 'success') {
-          statusDiv.innerHTML = '<p style="color: green;">Операция выполнена успешно!</p>';
-        } else if (status === 'error') {
-          const errorMessage = params.get('message');
-          statusDiv.innerHTML = '<p style="color: red;">Ошибка: ' + errorMessage + '</p>';
-        }
-      }
+      //   if (status === 'success') {
+      //     statusDiv.innerHTML = '<p style="color: green;">Операция выполнена успешно!</p>';
+      //   } else if (status === 'error') {
+      //     const errorMessage = params.get('message');
+      //     statusDiv.innerHTML = '<p style="color: red;">Ошибка: ' + errorMessage + '</p>';
+      //   }
+      // }
 
-      // Проверяем, есть ли параметр error
-      if (params.has('error')) {
-        const errorList = document.querySelector('.error-list');
-        const errors = params.getAll('error');
+      // // Проверяем, есть ли параметр error
+      // if (params.has('server err')) {
+      //   const errorList = document.querySelector('.error-list');
+      //   const errors = params.getAll('error');
 
-        for (let i = 0; i < errors.length; i++) {
-          const errorItem = document.createElement('li');
-          errorItem.textContent = errors[i];
-          errorList.appendChild(errorItem);
-        }
-      }
-    </script>
+      //   for (let i = 0; i < errors.length; i++) {
+      //     const errorItem = document.createElement('li');
+      //     errorItem.textContent = errors[i];
+      //     errorList.appendChild(errorItem);
+      //   }
+      // }
+    </script-->
   </body>
 </html>
