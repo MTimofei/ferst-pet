@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-var validPath = regexp.MustCompile("^/(reg|identify|reg/process)$")
+var validPath = regexp.MustCompile("^/(reg|identify|reg/process|/auth/process|/auth)$")
 
 func CheckURL(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	log.Println("not valid path")

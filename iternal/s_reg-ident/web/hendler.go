@@ -12,7 +12,7 @@ import (
 	"pet/iternal/s_reg-ident/str/salt"
 )
 
-func handlerIdent(w http.ResponseWriter, r *http.Request) {
+func handlerRegPage(w http.ResponseWriter, r *http.Request) {
 	log.Println("connection")
 	templ, err := template.ParseFiles("ui/HTML/reg3.html")
 	if err != nil {
@@ -27,19 +27,8 @@ func handlerIdent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (con *ConnectDB) handlerPost(w http.ResponseWriter, r *http.Request) {
+func (con *ConnectDB) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
 	log.Println("process")
-	templ, err := template.ParseFiles("ui/HTML/regstat2.html")
-	if err != nil {
-		myerr.ServesError(w, err)
-		return
-	}
-
-	err = templ.Execute(w, nil)
-	if err != nil {
-		myerr.ServesError(w, err)
-		return
-	}
 
 	if len(r.FormValue("name")) == 0 || len(r.FormValue("password")) == 0 || len(r.FormValue("email")) == 0 {
 		err := fmt.Errorf("not se value")
@@ -47,7 +36,7 @@ func (con *ConnectDB) handlerPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = comsql.CheckUinquenessLogin(con.MySQL, r)
+	err := comsql.CheckUinquenessLogin(con.MySQL, r)
 	if err != nil {
 		myerr.ServesError(w, err)
 		return
@@ -75,7 +64,14 @@ func (con *ConnectDB) handlerPost(w http.ResponseWriter, r *http.Request) {
 		myerr.ServesError(w, err)
 		return
 	}
-
-	fmt.Fprintf(w, "%s", http.StatusText(http.StatusOK))
+	templ, err := template.ParseFiles("ui/HTML/regstat2.html")
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
+	err = templ.Execute(w, http.StatusText(http.StatusOK))
+	if err != nil {
+		log.Panicln(err)
+	}
 }

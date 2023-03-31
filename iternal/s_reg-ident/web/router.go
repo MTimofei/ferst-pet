@@ -14,7 +14,7 @@ type ConnectDB struct {
 
 func (con *ConnectDB) Router() (mux *http.ServeMux) {
 	mux = http.NewServeMux()
-	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerIdent))
-	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerPost))
+	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerRegPage))
+	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerRegProcess))
 	return mux
 }
