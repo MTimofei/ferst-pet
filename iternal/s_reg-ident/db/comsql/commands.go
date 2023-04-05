@@ -5,10 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"pet/pkg/convert"
-
 	"pet/iternal/s_reg-ident/str/regin"
 	"pet/iternal/s_reg-ident/str/salt"
+	"pet/pkg/convert"
 )
 
 func CheckUinquenessLogin(db *sql.DB, r *http.Request) (err error) {
