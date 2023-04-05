@@ -2,6 +2,7 @@ package salt
 
 import (
 	rand2 "math/rand"
+	"pet/pkg/convert"
 	"time"
 
 	"golang.org/x/crypto/argon2"
@@ -23,7 +24,17 @@ func GenerateSalt() *Salt {
 	}
 	return salt
 }
-func (salt *Salt) GetDyanmicSalt() (dunamicsalt []byte) {
+
+func CreateSaltAuth(salt string) (saltauth *Salt, err error) {
+	saltauth.static = []byte("hSbPo?Zz")
+	saltauth.dynamic, err = convert.StrToByte(salt)
+	if err != nil {
+		return nil, err
+	}
+	return saltauth, nil
+}
+
+func (salt *Salt) GetDynamicSalt() (dunamicsalt []byte) {
 	dunamicsalt = salt.dynamic
 	return dunamicsalt
 }

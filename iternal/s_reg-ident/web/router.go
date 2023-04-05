@@ -3,7 +3,6 @@ package web
 import (
 	"database/sql"
 	"net/http"
-
 	"pet/iternal/s_reg-ident/web/urlcheck"
 )
 
@@ -16,5 +15,7 @@ func (con *ConnectDB) Router() (mux *http.ServeMux) {
 	mux = http.NewServeMux()
 	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerRegPage))
 	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerRegProcess))
+	mux.HandleFunc("/auth", urlcheck.CheckURL(handlerAuthPage))
+	mux.HandleFunc("/auth/process", urlcheck.CheckURL(con.handlerAuthProcess))
 	return mux
 }

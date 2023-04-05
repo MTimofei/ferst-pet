@@ -5,15 +5,14 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"pet/pkg/myerr"
-
 	"pet/iternal/s_reg-ident/db/comsql"
 	"pet/iternal/s_reg-ident/str/regin"
 	"pet/iternal/s_reg-ident/str/salt"
+	"pet/pkg/myerr"
 )
 
 func handlerRegPage(w http.ResponseWriter, r *http.Request) {
-	log.Println("connection")
+	log.Println("connection reg")
 	templ, err := template.ParseFiles("ui/HTML/reg3.html")
 	if err != nil {
 		myerr.ServesError(w, err)
@@ -28,7 +27,7 @@ func handlerRegPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (con *ConnectDB) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
-	log.Println("process")
+	log.Println("process reg")
 
 	if len(r.FormValue("name")) == 0 || len(r.FormValue("password")) == 0 || len(r.FormValue("email")) == 0 {
 		err := fmt.Errorf("not se value")
@@ -74,4 +73,23 @@ func (con *ConnectDB) handlerRegProcess(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		log.Panicln(err)
 	}
+}
+
+func handlerAuthPage(w http.ResponseWriter, r *http.Request) {
+	log.Println("connection auth")
+	templ, err := template.ParseFiles("ui/HTML/auth.html")
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
+	err = templ.Execute(w, nil)
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+}
+
+func (con *ConnectDB) handlerAuthProcess(w http.ResponseWriter, r *http.Request) {
+
 }
