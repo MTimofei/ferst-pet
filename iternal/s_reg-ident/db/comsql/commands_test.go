@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"pet/iternal/s_reg-ident/db/comsql"
+	"pet/iternal/s_reg-ident/str/account"
 	"reflect"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-
-	"pet/iternal/s_reg-ident/db/comsql"
 )
 
 func TestCheckUinquessLogin(t *testing.T) {
@@ -107,6 +107,62 @@ func TestCheckUinquessEmail(t *testing.T) {
 
 			if !reflect.DeepEqual(resolt, n.correctresp) {
 				t.Errorf("\nbd log_name:	%s\nclient log_name:	%s\nresolt:	 %s", n.dataDB, n.dataclient, resolt)
+			}
+		})
+	}
+}
+
+func TestGetAccountData(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("error creating sqlmock DB: %v", err)
+	}
+	defer db.Close()
+
+	type Resp struct {
+		acc *account.Account
+		err error
+	}
+
+	type DataDB struct {
+		id       int
+		password string
+		salt     string
+	}
+
+	account := &[]struct {
+		numtest            string
+		db                 DataDB
+		dataclient_logname string
+		correctresp        Resp
+	}{
+		{numtest: "test_1", db: DataDB{id: 1, password: "001", salt: "00"}, dataclient_logname: "i", correctresp: Resp{acc: account.New(1, "i", "001", "00"), err: nil}},
+		{numtest: "test_2", db: DataDB{id: 2, password: "112", salt: "00"}, dataclient_logname: "o", correctresp: Resp{acc: account.New(2, "o", "112", "00"), err: nil}},
+		{numtest: "test_3", db: DataDB{id: 3, password: "234", salt: "00"}, dataclient_logname: "p", correctresp: Resp{acc: account.New(3, "p", "234", "00"), err: nil}},
+		{numtest: "test_4", db: DataDB{id: 4, password: "24", salt: "00"}, dataclient_logname: "u", correctresp: Resp{acc: account.New(4, "u", "24", "00"), err: nil}},
+	}
+
+	for _, n := range *account {
+
+		t.Run(n.numtest, func(t *testing.T) {
+
+			rows := sqlmock.NewRows([]string{"id", "password", "salt"})
+			rows.AddRow(n.db.id, n.db.password, n.db.salt)
+
+			query := fmt.Sprintf(`SELECT id, password_hash, salt_hash FROM account WHERE log_name = '%s';`, n.dataclient_logname)
+			mock.ExpectQuery(query).WillReturnRows(rows)
+
+			resolt := &Resp{}
+			resolt.acc, resolt.err = comsql.GetAccountData(db, n.dataclient_logname)
+
+			if err = mock.ExpectationsWereMet(); err != nil {
+				t.Errorf("there were unfulfilled expectations: %s", err)
+			}
+			if resolt.err != n.correctresp.err {
+				t.Errorf("Unexpected error: %v", resolt.err)
+			}
+			if reflect.DeepEqual(resolt.acc, *n.correctresp.acc) {
+				t.Errorf("Unexpected account data. Expected: %v, got: %v", n.correctresp.acc, resolt.acc)
 			}
 		})
 	}

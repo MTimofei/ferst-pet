@@ -26,11 +26,12 @@ func GenerateSalt() *Salt {
 }
 
 func CreateSaltAuth(salt string) (saltauth *Salt, err error) {
-	saltauth.static = []byte("hSbPo?Zz")
-	saltauth.dynamic, err = convert.StrToByte(salt)
+	s := []byte("hSbPo?Zz")
+	d, err := convert.StrToByte(salt)
 	if err != nil {
 		return nil, err
 	}
+	saltauth = &Salt{static: s, dynamic: d}
 	return saltauth, nil
 }
 

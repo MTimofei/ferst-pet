@@ -5,16 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"pet/iternal/s_reg-ident/str/account"
 	"pet/iternal/s_reg-ident/str/regin"
 	"pet/iternal/s_reg-ident/str/salt"
 	"pet/pkg/convert"
 )
-
-type Account struct {
-	Id   int
-	Key  string
-	Salt string
-}
 
 func CheckUinquenessLogin(db *sql.DB, r *http.Request) (err error) {
 	query := fmt.Sprintf(`SELECT log_name FROM account WHERE log_name = '%s';`, r.FormValue("name"))
@@ -55,17 +50,34 @@ func SendRegData(db *sql.DB, salt *salt.Salt, rdin *regin.RegDataIn, key []byte)
 	return nil
 }
 
-func GetAccountData(db *sql.DB, logname string) (account *Account, err error) {
-	query := fmt.Sprintf(`SELECT id,password_hash, salt_hash FROM account WHERE log_name = '%s';`, logname)
+func GetAccountData(db *sql.DB, logname string) (acc *account.Account, err error) {
+
+	var id int
+	var key string
+	var salt string
+	// var logname string = r.FormValue("name")
+	// var password srting = r.FormValue("password")
+
+	query := fmt.Sprintf(`SELECT id, password_hash, salt_hash FROM account WHERE log_name = '%s';`, logname)
 	results, err := db.Query(query)
+
 	if err != nil {
 		return nil, err
 	}
-	for results.Next() {
-		err = results.Scan(account.Id, account.Key, account.Salt)
+
+	if results.Next() {
+		err = results.Scan(&id, &key, &salt)
 		if err != nil {
 			return nil, err
 		}
+		acc, err = account.New(id, logname, key, salt)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		err = errors.New("no data found")
+		return nil, err
 	}
-	return account, nil
+
+	return acc, nil
 }
