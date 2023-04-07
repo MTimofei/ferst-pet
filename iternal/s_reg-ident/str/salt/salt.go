@@ -25,14 +25,12 @@ func GenerateSalt() *Salt {
 	return salt
 }
 
-func CreateSaltAuth(salt string) (saltauth *Salt, err error) {
+func CreateSaltAuth(salt string) (saltauth *Salt) {
 	s := []byte("hSbPo?Zz")
-	d, err := convert.StrToByte(salt)
-	if err != nil {
-		return nil, err
-	}
+	d := convert.StrToByte(salt)
+
 	saltauth = &Salt{static: s, dynamic: d}
-	return saltauth, nil
+	return saltauth
 }
 
 func (salt *Salt) GetDynamicSalt() (dunamicsalt []byte) {

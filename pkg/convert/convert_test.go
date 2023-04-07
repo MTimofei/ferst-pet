@@ -1,10 +1,9 @@
 package convert_test
 
 import (
+	"pet/pkg/convert"
 	"reflect"
 	"testing"
-
-	"pet/pkg/convert"
 )
 
 func TestByteToInt(t *testing.T) {
@@ -60,10 +59,7 @@ func TestStrToByte(t *testing.T) {
 	}
 	for _, tt := range testDT {
 		t.Run(tt.name, func(t *testing.T) {
-			output, err := convert.StrToByte(tt.input)
-			if err != nil {
-				t.Errorf("unexpected output for %v. expected: %v, got: %v", tt.input, tt.expected, err)
-			}
+			output := convert.StrToByte(tt.input)
 			if !reflect.DeepEqual(output, tt.expected) {
 				t.Errorf("unexpected output for %v. expected: %v, got: %v", tt.input, tt.expected, output)
 			}

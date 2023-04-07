@@ -92,15 +92,12 @@ func (con *ConnectDB) handlerAuthProcess(w http.ResponseWriter, r *http.Request)
 	}
 
 	a := auth.New(resolt, r)
-	b, err := a.Compare()
-	if err != nil {
-		myerr.ServesError(w, err)
-		return
-	}
+	b := a.Compare()
+	log.Println(b)
 	if !b {
 		return
 	}
-	fmt.Println(b)
+
 	pars.ParsPage(w, "ui/HTML/regstat2.html")
 	if err != nil {
 		log.Println(err)

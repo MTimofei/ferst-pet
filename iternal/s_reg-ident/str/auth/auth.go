@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"net/http"
 	"pet/iternal/s_reg-ident/str/account"
 	"pet/pkg/convert"
@@ -21,17 +20,14 @@ func New(account *account.Account, r *http.Request) (a *Auth) {
 	return a
 }
 
-func (a *Auth) Compare() (b bool, err error) {
+func (a *Auth) Compare() (b bool) {
 	inkey := a.authdata.Saltauth.GeneraterKey([]byte(a.password))
-	dbkey, err := convert.StrToByte(a.authdata.Key)
-	if err != nil {
-		return false, err
-	}
+	dbkey := convert.StrToByte(a.authdata.Key)
+
 	if reflect.DeepEqual(inkey, dbkey) {
-		return true, nil
+		return true
 	} else {
-		err = errors.New("invalid password")
-		return false, err
+		return false
 	}
 
 }

@@ -70,10 +70,7 @@ func GetAccountData(db *sql.DB, logname string) (acc *account.Account, err error
 		if err != nil {
 			return nil, err
 		}
-		acc, err = account.New(id, logname, key, salt)
-		if err != nil {
-			return nil, err
-		}
+		acc = account.New(id, logname, key, salt)
 	} else {
 		err = errors.New("no data found")
 		return nil, err

@@ -11,7 +11,7 @@ import (
 
 var (
 	addr      = flag.String("addr", "localhost:8889", "adderss server")
-	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@/ppa?parseTime=true", "adderss mysql")
+	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@(51.250.107.132:4000)/ppa?parseTime=true", "adderss mysql")
 )
 
 func main() {
