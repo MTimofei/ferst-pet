@@ -3,15 +3,17 @@ package web
 import (
 	"database/sql"
 	"net/http"
+	"pet/iternal/jwt/re"
 	"pet/iternal/s_reg-ident/web/urlcheck"
 )
 
-type ConnectDB struct {
+type Connect struct {
 	MySQL *sql.DB
 	//PostgraSQL *sql.DB
+	K *re.Key
 }
 
-func (con *ConnectDB) Router() (mux *http.ServeMux) {
+func (con *Connect) Router() (mux *http.ServeMux) {
 	mux = http.NewServeMux()
 	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerRegPage))
 	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerRegProcess))
