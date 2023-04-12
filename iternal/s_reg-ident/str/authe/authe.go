@@ -3,7 +3,7 @@ package authe
 import (
 	"errors"
 	"net/http"
-	"pet/iternal/jwt/re"
+	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/iternal/s_reg-ident/str/account"
 	"pet/pkg/convert"
 	"reflect"

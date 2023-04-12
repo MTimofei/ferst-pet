@@ -3,7 +3,7 @@ package web
 import (
 	"database/sql"
 	"net/http"
-	"pet/iternal/jwt/re"
+	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/iternal/s_reg-ident/web/urlcheck"
 )
 
@@ -15,6 +15,7 @@ type Connect struct {
 
 func (con *Connect) Router() (mux *http.ServeMux) {
 	mux = http.NewServeMux()
+	mux.HandleFunc("/", urlcheck.CheckURL(con.handlerMain))
 	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerRegPage))
 	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerRegProcess))
 	mux.HandleFunc("/auth", urlcheck.CheckURL(handlerAuthPage))

@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"pet/iternal/jwt/re"
+	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/iternal/s_reg-ident/web"
 	"pet/pkg/sql/mysqlcon"
 )

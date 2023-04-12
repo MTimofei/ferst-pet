@@ -1,10 +1,10 @@
 package web
 
 import (
-	//"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"pet/iternal/s_reg-ident/cookies"
 	"pet/iternal/s_reg-ident/db/comsql"
 	"pet/iternal/s_reg-ident/str/authe"
 	"pet/iternal/s_reg-ident/str/regin"
@@ -13,14 +13,23 @@ import (
 	"pet/pkg/pars"
 )
 
-func handlerRegPage(w http.ResponseWriter, r *http.Request) {
-	log.Println("connection reg")
-
-	err := pars.ParsPage(w, "ui/HTML/reg3.html")
+func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
+	r.UserAgent()
+	cookie, err := r.Cookie("RefJWT")
 	if err != nil {
 		myerr.ServesError(w, err)
 		return
 	}
+	log.Printf("USER %s", r.UserAgent())
+	log.Printf("JWT %v", cookie.Value)
+	pars.ParsPage(w, "ui/HTML/regstat2.html")
+}
+
+func handlerRegPage(w http.ResponseWriter, r *http.Request) {
+	log.Println("connection reg")
+
+	pars.ParsPage(w, "ui/HTML/reg3.html")
+
 }
 
 func (con *Connect) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +61,7 @@ func (con *Connect) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
 
 	salt := salt.GenerateSalt()
 	key := salt.GeneraterKey(rd.GetPass())
-	fmt.Println(*salt, *rd, key)
+
 	err = comsql.SendRegData(con.MySQL, salt, rd, key)
 	if err != nil {
 		myerr.ServesError(w, err)
@@ -60,20 +69,14 @@ func (con *Connect) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pars.ParsPage(w, "ui/HTML/regstat2.html")
-	if err != nil {
-		myerr.ServesError(w, err)
-		return
-	}
+
 }
 
 func handlerAuthPage(w http.ResponseWriter, r *http.Request) {
 	log.Println("connection auth")
 
-	err := pars.ParsPage(w, "ui/HTML/auth.html")
-	if err != nil {
-		myerr.ServesError(w, err)
-		return
-	}
+	pars.ParsPage(w, "ui/HTML/auth.html")
+
 }
 
 func (con *Connect) handlerAuthProcess(w http.ResponseWriter, r *http.Request) {
@@ -104,10 +107,7 @@ func (con *Connect) handlerAuthProcess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Print(token)
+	http.SetCookie(w, cookies.CreateCookieAouth(token))
 
 	pars.ParsPage(w, "ui/HTML/regstat2.html")
-	if err != nil {
-		log.Println(err)
-	}
 }
