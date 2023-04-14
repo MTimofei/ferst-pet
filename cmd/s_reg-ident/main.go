@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	idjwt     = 0
 	addr      = flag.String("addr", "localhost:8889", "adderss server")
 	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@/ppa?parseTime=true", "adderss mysql")
 )
@@ -26,6 +27,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	k.Id = &idjwt
+
 	con := web.Connect{
 		MySQL: dbcon,
 		K:     k,

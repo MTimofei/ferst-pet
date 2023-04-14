@@ -1,7 +1,6 @@
 package myerr
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,5 +13,5 @@ func ServesError(w http.ResponseWriter, err error) {
 	if err_ != nil {
 		log.Println(err_)
 	}
-	templ.Execute(w, fmt.Sprintf("serve err: %v", err))
+	templ.Execute(w, err)
 }

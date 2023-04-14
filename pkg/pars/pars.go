@@ -18,5 +18,4 @@ func ParsPage(w http.ResponseWriter, path string) {
 		myerr.ServesError(w, err)
 		return
 	}
-
 }

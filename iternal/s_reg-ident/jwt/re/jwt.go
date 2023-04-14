@@ -4,8 +4,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"encoding/base64"
-	rand2 "math/rand"
+	"log"
 	"pet/iternal/s_reg-ident/str/account"
 	"time"
 
@@ -13,20 +12,19 @@ import (
 	//"github.com/golang-jwt/jwt/v5"
 )
 
-var idkey int64 = 0
-
 type Key struct {
 	privatekey *ecdsa.PrivateKey
+	Id         *int
 }
 
-type payloadc struct {
-	id   int
-	name string
-	//roles string
-	iat   time.Time
-	exp   time.Time
-	nonce uint8
-}
+// type payloadc struct {
+// 	id   int
+// 	name string
+// 	//roles string
+// 	iat   time.Time
+// 	exp   time.Time
+// 	nonce uint8
+// }
 
 func GeneratingEncryptionKeys() (k *Key, err error) {
 	p, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
@@ -40,22 +38,18 @@ func GeneratingEncryptionKeys() (k *Key, err error) {
 }
 
 func (k *Key) CreateJWTRefresh(a *account.Account) (tokenString string, err error) {
-	idkey++
-	ran := []byte{}
-	rand2.Seed(time.Now().UnixNano())
-	randNum := uint8(rand2.Intn(255))
-	ran = append(ran, randNum)
+	*k.Id++
+
 	tokenN := jwt.New(jwt.SigningMethodES256)
-	tokenN.Header["kid"] = idkey
+	tokenN.Header["kid"] = *k.Id
 	tokenN.Header["name"] = "ref"
 
 	tokenN.Claims = jwt.MapClaims{
-		"jti":  a.Id,
+		"jti":  a.Id + *k.Id,
 		"name": a.Logname,
+		"iat":  time.Now().Unix(),
+		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 		//"roles":a.roles
-		"iat":   time.Now().Unix(),
-		"exp":   time.Now().Add(time.Hour * 24).Unix(),
-		"nonce": base64.StdEncoding.EncodeToString(ran),
 	}
 
 	tokenString, err = tokenN.SignedString(k.privatekey)
@@ -64,4 +58,21 @@ func (k *Key) CreateJWTRefresh(a *account.Account) (tokenString string, err erro
 	}
 
 	return tokenString, nil
+}
+
+func (k *Key) VerifiedJWTRef(tokenString string) error {
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return k.privatekey.Public(), nil
+	})
+	if err != nil {
+		return err
+	}
+	log.Println(token.Valid)
+
+	// log.Println(token.Header)
+	// log.Println(token.Claims)
+	// log.Println(token.Signature)
+
+	return nil
 }

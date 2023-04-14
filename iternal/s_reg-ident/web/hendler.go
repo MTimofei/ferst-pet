@@ -20,8 +20,13 @@ func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
 		myerr.ServesError(w, err)
 		return
 	}
-	log.Printf("USER %s", r.UserAgent())
-	log.Printf("JWT %v", cookie.Value)
+	// log.Printf("USER %s", r.UserAgent())
+	// log.Printf("JWT %v", cookie.Value)
+	err = con.K.VerifiedJWTRef(cookie.Value)
+	if err != nil {
+		myerr.ServesError(w, err)
+		return
+	}
 	pars.ParsPage(w, "ui/HTML/regstat2.html")
 }
 
