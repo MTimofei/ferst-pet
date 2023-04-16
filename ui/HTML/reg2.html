@@ -6,22 +6,25 @@
   <style>
     /* Стили для страницы */
     body {
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #eee;
-    }
-
+        background-color: #f2f2f2;
+        text-align: center;
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        font-family: 'Courier New', monospace;
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        color: #eee;
+      }
     h1 {
-      font-size: 36px;
+      font-size: 2.5em;
       margin-top: 50px;
-      text-align: center;
       text-shadow: 2px 2px 3px rgba(255,255,255,0.1);
     }
 
     form {
       margin: 0 auto;
-      padding: 20px;
-      max-width: 500px;
+      padding: 10px;
+      max-width: 45%;
       background-color: rgba(0,0,0,0.5);
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
@@ -78,21 +81,59 @@
 
     p {
       text-align: center;
-      margin-top: 20px;
-      font-size: 16px;
-      color: #ccc;
-      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+        font-size: 16px;
+        color: #ccc;
+        text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+        font-size: 1.2em;
+        margin-top: 30px;
     }
 
     a {
-      color: #fff;
-      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
       text-decoration: none;
+      border-radius: 5px;
+      margin-top: 30px;
+      font-size: 1.2em;
+      transition: background-color 0.3s ease;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
     }
 
     a:hover {
       text-decoration: underline;
     }
+    
+    @media only screen and (max-width: 600px) {
+        body {
+          font-size: 16px;
+        }
+
+        h1 {
+          font-size: 2em;
+          margin-top: 30px;
+        }
+
+        p {
+          font-size: 1em;
+          margin-top: 20px;
+        }
+
+        a {
+          font-size: 0.9em;
+          padding: 10px 15px;
+          margin-top: 20px;
+        }
+        
+        
+        form {
+          padding: 5px;
+          font-size: 16px;
+          background-color: rgba(0,0,0,0.9);
+          max-width: 99%;
+        }
+      }
   </style>
 </head>
 <body>

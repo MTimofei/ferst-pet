@@ -1,0 +1,26 @@
+header {
+	background-color: #333; /* цвет фона хедера */
+	color: #fff; /* цвет текста в хедере */
+	padding: 10px; /* внутренний отступ для хедера */
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav li {
+	display: inline-block; /* элементы меню в одной строке */
+	margin-right: 20px; /* расстояние между элементами меню */
+}
+
+nav a {
+	color: #fff; /* цвет ссылок */
+	text-decoration: none; /* убрать подчеркивание ссылок */
+	font-size: 16px; /* размер шрифта ссылок */
+}
+
+nav a:hover {
+	color: #f00; /* цвет ссылки при наведении на нее мыши */
+}
