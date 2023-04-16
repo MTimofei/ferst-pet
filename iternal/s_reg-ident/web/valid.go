@@ -1,4 +1,4 @@
-package urlcheck
+package web
 
 import (
 	"errors"
@@ -9,12 +9,12 @@ import (
 
 var validPath = regexp.MustCompile("^/(reg|auth)?(/process)?$")
 
-func CheckURL(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
+func (con *Connect) ValidUrl(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
 		if m == nil {
 			//log.Println("not valid path")
-			myerr.ServesError(w, errors.New("not valid path"))
+			myerr.ServesError(w, con.HashTempl, errors.New("not valid path"))
 			return
 		}
 		fn(w, r)

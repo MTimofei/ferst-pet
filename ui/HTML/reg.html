@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Регистрация на сайте</title>
-        <style>
-            body {
-                font-family: Helvetica, Arial, sans-serif;
-                background-color: #f2f2f2;
-                text-align: center;
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация на сайте</title>
+  <style>
+    body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #f2f2f2;
+    text-align: center;
     font-size: 20px;
     margin: 0;
     padding: 0;
@@ -132,18 +132,37 @@ a:hover {
     }
 }
 
-        </style>
-      </head>
-  <body>
-    <h1>Authorization</h1>
-    <form action="/auth/process" method="POST">
-      <label for="name">Username:</label>
-      <input type="text" id="name" name="name" required><br><br>
-      
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required><br><br>
-      
-      <button value="вход">Вход</button>
-    </form>
-  </body>
+  </style>
+</head>
+<body>
+<h1>Регистрация на сайте</h1>
+<form action="/reg/process" method="POST">
+  <!-- Поле для ввода логина -->
+  <label for="name">Логин:</label>
+  <input type="text" id="name" name="name" required>
+  <!-- Поле для ввода email -->
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <!-- Поле для ввода пароля -->
+  <label for="password">Пароль:</label>
+  <input type="password" id="password" name="password" required>
+
+  <!-- Поле для подтверждения пароля
+  <label for="confirm-password">Повторите пароль:</label>
+  <input type="password" id="confirm-password" name="confirm-password" required>
+-->
+  <!-- Флажок для подтверждения согласия с условиями использования сайта -->
+    <label for="agree">
+      <input type="checkbox" id="agree" name="agree" required>
+      Я согласен с условиями использования сайта
+    </label>
+      <p>
+        <button value="Зарегистрироваться">Зарегистрироваться</button><br>
+        Уже зарегистрированы? <a href="/auth">Войти</a>
+      </p>
+</form>
+
+
+</body>
 </html>

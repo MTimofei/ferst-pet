@@ -4,21 +4,21 @@ import (
 	"database/sql"
 	"net/http"
 	"pet/iternal/s_reg-ident/jwt/re"
-	"pet/iternal/s_reg-ident/web/urlcheck"
+	"pet/pkg/pars"
 )
 
 type Connect struct {
-	MySQL *sql.DB
-	//PostgraSQL *sql.DB
-	K *re.Key
+	MySQL     *sql.DB
+	K         *re.Key
+	HashTempl *pars.HashTempl
 }
 
 func (con *Connect) Router() (mux *http.ServeMux) {
 	mux = http.NewServeMux()
-	mux.HandleFunc("/", urlcheck.CheckURL(con.handlerMain))
-	mux.HandleFunc("/reg", urlcheck.CheckURL(handlerRegPage))
-	mux.HandleFunc("/reg/process", urlcheck.CheckURL(con.handlerRegProcess))
-	mux.HandleFunc("/auth", urlcheck.CheckURL(handlerAuthPage))
-	mux.HandleFunc("/auth/process", urlcheck.CheckURL(con.handlerAuthProcess))
+	mux.HandleFunc("/", con.ValidUrl(con.handlerMain))
+	mux.HandleFunc("/reg", con.ValidUrl(con.handlerRegPage))
+	mux.HandleFunc("/auth", con.ValidUrl(con.handlerAuthPage))
+	mux.HandleFunc("/reg/process", con.ValidUrl(con.handlerRegProcess))
+	mux.HandleFunc("/auth/process", con.ValidUrl(con.handlerAuthProcess))
 	return mux
 }

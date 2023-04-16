@@ -2,11 +2,15 @@ package web
 
 import (
 	"net/http"
-	"pet/iternal/s_main/web/validurl"
+	"pet/pkg/pars"
 )
 
-func Rout() *http.ServeMux {
+type Connect struct {
+	PageHash *pars.HashTempl
+}
+
+func (con *Connect) Rout() *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", validurl.ValidUrl(hendlerMain))
+	mux.HandleFunc("/", con.ValidUrl(con.hendlerMain))
 	return mux
 }

@@ -1,17 +1,14 @@
 package myerr
 
 import (
-	"html/template"
 	"log"
 	"net/http"
+	"pet/pkg/pars"
 )
 
-func ServesError(w http.ResponseWriter, err error) {
+func ServesError(w http.ResponseWriter, h *pars.HashTempl, err error) {
 	log.Println(err)
 	w.WriteHeader(http.StatusMethodNotAllowed)
-	templ, errs := template.ParseFiles("ui/HTML/regstat2.html")
-	if errs != nil {
-		log.Println("sistem err: ", errs)
-	}
+	templ := h.Hash["regstat"]
 	templ.Execute(w, err)
 }

@@ -1,4 +1,4 @@
-package validurl
+package web
 
 import (
 	"errors"
@@ -9,11 +9,11 @@ import (
 
 var validPath = regexp.MustCompile("^/$")
 
-func ValidUrl(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
+func (con *Connect) ValidUrl(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
 		if m == nil {
-			myerr.ServesError(w, errors.New("not valid path"))
+			myerr.ServesError(w, con.PageHash, errors.New("not valid path"))
 			return
 		}
 		fn(w, r)

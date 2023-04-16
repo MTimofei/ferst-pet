@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/iternal/s_reg-ident/web"
+	"pet/pkg/pars"
 	"pet/pkg/sql/mysqlcon"
 )
 
@@ -28,10 +29,12 @@ func main() {
 		log.Fatal(err)
 	}
 	k.Id = &idjwt
-
+	hesh := pars.New("reg", "auth", "regstat")
+	hesh.LoadHash("ui/HTML/")
 	con := web.Connect{
-		MySQL: dbcon,
-		K:     k,
+		MySQL:     dbcon,
+		K:         k,
+		HashTempl: &hesh,
 	}
 
 	err = http.ListenAndServe(*addr, con.Router())
