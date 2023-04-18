@@ -11,6 +11,6 @@ type Connect struct {
 
 func (con *Connect) Rout() *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", con.ValidUrl(con.hendlerMain))
+	mux.HandleFunc("/main", con.ValidUrl(con.hendlerMain))
 	return mux
 }

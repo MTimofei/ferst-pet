@@ -26,6 +26,9 @@ func GenerateSalt() *Salt {
 }
 
 func CreateSaltAuth(salt string) (saltauth *Salt) {
+	if salt == "" {
+		return nil
+	}
 	s := []byte("hSbPo?Zz")
 	d := convert.StrToByte(salt)
 

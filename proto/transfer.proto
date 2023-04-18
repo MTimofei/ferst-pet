@@ -1,0 +1,14 @@
+syntax = "proto3";
+option  go_package="proto";
+package transfe;
+
+service Greeter {
+  rpc GetKey (Request) returns (Key) {}
+}
+
+message Request {  
+}
+
+message Key {
+ bytes public_key = 1;
+}

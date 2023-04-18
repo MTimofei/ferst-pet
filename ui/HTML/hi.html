@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Моя приветственная страница</title>
+    <style>
+        body {
+        font-family: Helvetica, Arial, sans-serif;
+        background-color: #f2f2f2;
+        text-align: center;
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        color: #eee;
+    }
+    h1 {
+        font-size: 2.5em;
+        margin-top: 2%;
+    }
+    
+    form {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        padding: 10px;
+        max-width: 50%;
+        background-color: rgba(0,0,0,0.5);
+        border-radius: 5px;
+        box-shadow: 0 0 6px rgba(0, 255, 0, 0.8);
+        overflow: hidden;
+    }
+    label {
+        display: block;
+        margin-bottom: 1%;
+        font-size: 80%;
+        font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        display: block;
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 90%;
+        font-size: 16px;
+        border: none;                        
+        border-radius: 3px;
+        box-shadow: 0 0 2px rgba(0, 255, 0, 0.8);
+        background-color: rgba(0,0,0,0.3);
+        color: #fff;
+    }
+    ::placeholder {
+        color: #ccc;
+    }
+    
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    input[type="submit"] {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+                                font-size: 18px;
+                                font-weight: bold;
+                                color: #eee;
+                                background-color: #4CAF50;
+                                border: none;
+                                border-radius: 3px;
+                                cursor: pointer;
+                                }
+    
+                                input[type="submit"]:hover {
+                                background-color: #74C374;
+                                }
+    
+                                p {
+                                text-align: center;
+                                    font-size: 16px;
+                                    color: #ccc;
+                                    text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+                                    font-size: 1.2em;
+                                    margin-top: 30px;
+                                }
+                                button{
+                                padding: 2% 2%;
+                                background-color: rgb(0, 202, 101)
+                                }
+                                a {
+                                display: inline-block;
+                                background-color: #4CAF50;
+                                color: white;
+                                padding: 1% 2%;
+        text-decoration: none;
+        border-radius: 4%;
+        margin-top: 3%;
+        font-size: 1.2em;
+        transition: background-color 0.3s ease;
+        text-shadow: 1% 1% 1% rgba(0,0,0,0.5);
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    @media only screen and (max-width: 600px) {
+        body {
+            font-size: 16px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-top: 30px;
+        }
+        p {
+            font-size: 1em;
+            margin-top: 20px;
+        }
+    
+        a {
+            font-size: 0.9em;
+            padding: 10px 15px;
+            margin-top: 20px;
+        }
+                                    
+                                    
+        form {
+            padding: 5px;
+            font-size: 16px;
+            background-color: rgba(0,0,0,0.9);
+            max-width: 99%
+        }
+    }
+    
+      </style>
+</head>
+<body>
+    <form>
+	<h2>Добро пожаловать на мою страницу!</h2>
+    <h2>{{.Authdata.Logname}}</h2>
+	</form>
+</body>
+</html>

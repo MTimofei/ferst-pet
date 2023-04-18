@@ -31,9 +31,10 @@ func (h *HashTempl) LoadHash(pathdir string) {
 	}
 }
 
-func ParsPage(w http.ResponseWriter, namepage string, hesh *HashTempl) (err error) {
-	w.WriteHeader(http.StatusOK)
-	err = hesh.Hash[namepage].Execute(w, http.StatusText(http.StatusOK))
+func ParsPage(w http.ResponseWriter, namepage string, hesh *HashTempl, content interface{}) (err error) {
+	//w.WriteHeader(http.StatusOK)
+
+	err = hesh.Hash[namepage].Execute(w, content)
 	if err != nil {
 		return err
 	}

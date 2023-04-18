@@ -7,7 +7,7 @@ import (
 	"regexp"
 )
 
-var validPath = regexp.MustCompile("^/$")
+var validPath = regexp.MustCompile("^/(main)$")
 
 func (con *Connect) ValidUrl(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

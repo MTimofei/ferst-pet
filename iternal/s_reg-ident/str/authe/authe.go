@@ -7,6 +7,8 @@ import (
 	"pet/iternal/s_reg-ident/str/account"
 	"pet/pkg/convert"
 	"reflect"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type Authe struct {
@@ -25,6 +27,30 @@ func New(account *account.Account, r *http.Request) (a *Authe) {
 	return a
 }
 
+func nweAuthTrue(token *jwt.Token) (a *Authe) {
+	claims := token.Claims.(jwt.MapClaims)
+	id := claims["id"].(float64)
+	name := claims["name"].(string)
+
+	account := account.New(int(id), name, "", "")
+	a = &Authe{
+		password: "",
+		Authdata: account,
+		isit:     true,
+	}
+	return a
+}
+
+func AuthRefJWT(k *re.KeyRef, tokenString string) (a *Authe, err error) {
+	var token *jwt.Token
+	if token, err = k.VerifiedJWTRef(tokenString); err != nil {
+		return nil, err
+	}
+	a = nweAuthTrue(token)
+	return a, nil
+
+}
+
 func (a *Authe) Compare() {
 	inkey := a.Authdata.Saltauth.GeneraterKey([]byte(a.password))
 	dbkey := convert.StrToByte(a.Authdata.Key)
@@ -36,13 +62,13 @@ func (a *Authe) Compare() {
 
 }
 
-func (a *Authe) CreateJWT(K *re.Key) (t string, err error) {
+func (a *Authe) CreateJWTRef(K *re.KeyRef) (token string, err error) {
 	if a.isit {
-		t, err = K.CreateJWTRefresh(a.Authdata)
+		token, err = K.CreateJWTRefresh(a.Authdata)
 		if err != nil {
 			return "", err
 		}
-		return t, nil
+		return token, nil
 	} else {
 		err = errors.New("not valid data")
 		return "", err

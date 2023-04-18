@@ -4,40 +4,37 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"log"
 	"pet/iternal/s_reg-ident/str/account"
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	//"github.com/golang-jwt/jwt/v5"
 )
 
-type Key struct {
+type KeyRef struct {
 	privatekey *ecdsa.PrivateKey
-	Id         *int
+	Id         *int64
 }
 
-// type payloadc struct {
-// 	id   int
-// 	name string
-// 	//roles string
-// 	iat   time.Time
-// 	exp   time.Time
-// 	nonce uint8
+// type ClaimsStoreg struct {
+// 	id   int       `json:"id"`
+// 	name string    `json:"name"`
+// 	iat  time.Time `json:"iat"`
+//	exp  time.Time `json:"exp"`
+// 	//"roles":a.roles
 // }
 
-func GeneratingEncryptionKeys() (k *Key, err error) {
-	p, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+func GeneratingEncryptionKeys() (k *KeyRef, err error) {
+	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return nil, err
 	}
-	k = &Key{
-		privatekey: p,
+	k = &KeyRef{
+		privatekey: key,
 	}
 	return
 }
 
-func (k *Key) CreateJWTRefresh(a *account.Account) (tokenString string, err error) {
+func (k *KeyRef) CreateJWTRefresh(a *account.Account) (tokenString string, err error) {
 	*k.Id++
 
 	tokenN := jwt.New(jwt.SigningMethodES256)
@@ -45,7 +42,7 @@ func (k *Key) CreateJWTRefresh(a *account.Account) (tokenString string, err erro
 	tokenN.Header["name"] = "ref"
 
 	tokenN.Claims = jwt.MapClaims{
-		"jti":  a.Id + *k.Id,
+		"id":   a.Id,
 		"name": a.Logname,
 		"iat":  time.Now().Unix(),
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
@@ -60,19 +57,12 @@ func (k *Key) CreateJWTRefresh(a *account.Account) (tokenString string, err erro
 	return tokenString, nil
 }
 
-func (k *Key) VerifiedJWTRef(tokenString string) error {
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+func (k *KeyRef) VerifiedJWTRef(tokenString string) (token *jwt.Token, err error) {
+	token, err = jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return k.privatekey.Public(), nil
 	})
 	if err != nil {
-		return err
+		return token, err
 	}
-	log.Println(token.Valid)
-
-	// log.Println(token.Header)
-	// log.Println(token.Claims)
-	// log.Println(token.Signature)
-
-	return nil
+	return token, nil
 }

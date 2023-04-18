@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"pet/iternal/s_reg-ident/cookies"
+	"pet/iternal/s_reg-ident/cookiepkg"
 	"pet/iternal/s_reg-ident/db/comsql"
 	"pet/iternal/s_reg-ident/str/authe"
 	"pet/iternal/s_reg-ident/str/regin"
@@ -14,26 +14,39 @@ import (
 )
 
 func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
-	r.UserAgent()
-	cookie, err := r.Cookie("RefJWT")
+	//r.UserAgent()
+	log.Println(r.Header)
+	cookieref, err := r.Cookie("RefJWT")
 	if err != nil {
 		myerr.ServesError(w, con.HashTempl, err)
 		return
 	}
-	// log.Printf("USER %s", r.UserAgent())
-	// log.Printf("JWT %v", cookie.Value)
-	err = con.K.VerifiedJWTRef(cookie.Value)
+
+	a, err := authe.AuthRefJWT(con.KRef, cookieref.Value)
 	if err != nil {
 		myerr.ServesError(w, con.HashTempl, err)
 		return
 	}
-	pars.ParsPage(w, "regstat", con.HashTempl)
+
+	if cookiecli, err := r.Cookie("Client"); err != nil {
+		err = nil
+		// myerr.ServesError(w, con.HashTempl, err)
+		// return
+	} else {
+		log.Println("client cookei", *cookiecli)
+		token := con.KAcc.CreateJWTAcc(cookiecli.Value, a.Authdata)
+		cookieacc := cookiepkg.CreateCookieAcc(token, cookiecli.Value)
+		http.SetCookie(w, cookieacc)
+		http.Redirect(w, r, cookiecli.Value, http.StatusSeeOther)
+	}
+
+	pars.ParsPage(w, "hi", con.HashTempl, *a)
 }
 
 func (con *Connect) handlerRegPage(w http.ResponseWriter, r *http.Request) {
 	log.Println("connection reg")
 
-	pars.ParsPage(w, "reg", con.HashTempl)
+	pars.ParsPage(w, "reg", con.HashTempl, nil)
 
 }
 
@@ -73,14 +86,14 @@ func (con *Connect) handlerRegProcess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pars.ParsPage(w, "regstat", con.HashTempl)
+	pars.ParsPage(w, "regstat", con.HashTempl, http.StatusOK)
 
 }
 
 func (con *Connect) handlerAuthPage(w http.ResponseWriter, r *http.Request) {
 	log.Println("connection auth")
 
-	pars.ParsPage(w, "auth", con.HashTempl)
+	pars.ParsPage(w, "auth", con.HashTempl, nil)
 
 }
 
@@ -106,13 +119,13 @@ func (con *Connect) handlerAuthProcess(w http.ResponseWriter, r *http.Request) {
 
 	a := authe.New(resolt, r)
 	a.Compare()
-	token, err := a.CreateJWT(con.K)
+	token, err := a.CreateJWTRef(con.KRef)
 	if err != nil {
 		myerr.ServesError(w, con.HashTempl, err)
 		return
 	}
 
-	http.SetCookie(w, cookies.CreateCookieAouth(token))
+	http.SetCookie(w, cookiepkg.CreateCookieAouth(token))
 
-	pars.ParsPage(w, "regstat", con.HashTempl)
+	pars.ParsPage(w, "regstat", con.HashTempl, http.StatusOK)
 }

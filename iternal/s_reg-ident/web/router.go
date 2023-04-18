@@ -3,13 +3,15 @@ package web
 import (
 	"database/sql"
 	"net/http"
+	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/pkg/pars"
 )
 
 type Connect struct {
 	MySQL     *sql.DB
-	K         *re.Key
+	KRef      *re.KeyRef
+	KAcc      *ac.KeyAcc
 	HashTempl *pars.HashTempl
 }
 
