@@ -13,3 +13,8 @@ func ServesError(w http.ResponseWriter, hesh *pars.HashTempl, err error) {
 	pars.ParsPage(w, "regstat", hesh, err)
 
 }
+func LogFatal(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}

@@ -4,7 +4,7 @@ package main
 import (
 	"flag"
 	"log"
-	"net/http"
+	"pet/iternal/s_reg-ident/grpcser"
 	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
 	"pet/iternal/s_reg-ident/web"
@@ -17,11 +17,19 @@ var (
 	idjwtacc int64 = 0
 
 	addr      = flag.String("addr", "localhost:8889", "adderss server")
+	addrGRPC  = flag.String("addrGRPC", "localhost:8000", "adderss gRPC")
 	pathDirUi = flag.String("puth-dir-ui", "ui/HTML/", "puth ui directory")
 	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@/ppa?parseTime=true", "adderss mysql")
 )
 
 func main() {
+	// fmt.Printf("Ограничение количества горутин: %d\n", runtime.GOMAXPROCS(0))
+	// n := 40
+	// fmt.Printf("Установка ограничения количества горутин на %d процессоров\n", n)
+	// runtime.GOMAXPROCS(n)
+
+	var block = make(chan int)
+
 	flag.Parse()
 
 	dbcon, err := mysqlcon.OpenMySQLDB(addrMySQL)
@@ -52,8 +60,8 @@ func main() {
 		HashTempl: &hesh,
 	}
 
-	err = http.ListenAndServe(*addr, con.Router())
-	if err != nil {
-		log.Fatal(err)
-	}
+	grpcser.ConnectionGRPC(*addrGRPC, kacc.GetPublicKey())
+	con.StartServe(addr)
+	log.Println("ALL READY")
+	<-block
 }

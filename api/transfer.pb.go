@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: proto/transfer.proto
 
-package __
+package api
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

@@ -1,7 +1,10 @@
 package web
 
 import (
+	"context"
 	"database/sql"
+	"log"
+	"net"
 	"net/http"
 	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
@@ -15,7 +18,23 @@ type Connect struct {
 	HashTempl *pars.HashTempl
 }
 
+func (con *Connect) StartServe(addr *string) {
+	log.Println("ser")
+	n := &net.ListenConfig{}
+	//context.WithTimeout(context.Background(), 5*time.Millisecond)
+	lis, err := n.Listen(context.Background(), "tcp", *addr)
+	//lis, err := net.Listen("tcp", *addr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	go func() {
+		err := http.Serve(lis, con.Router())
+		log.Fatal(err)
+	}()
+}
+
 func (con *Connect) Router() (mux *http.ServeMux) {
+
 	mux = http.NewServeMux()
 	mux.HandleFunc("/", con.ValidUrl(con.handlerMain))
 	mux.HandleFunc("/reg", con.ValidUrl(con.handlerRegPage))

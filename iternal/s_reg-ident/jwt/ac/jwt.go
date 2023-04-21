@@ -3,6 +3,7 @@ package ac
 import (
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/x509"
 	"pet/iternal/s_reg-ident/str/account"
 	"time"
 
@@ -25,7 +26,7 @@ func GenerateRSAKey() (k *KeyAcc, err error) {
 	return k, nil
 }
 
-func (k *KeyAcc) CreateJWTAcc(url string, a *account.Account) (tokenString string) {
+func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string) {
 	*k.Id++
 	token := jwt.New(jwt.SigningMethodRS256)
 	token.Header["kid"] = *k.Id
@@ -38,4 +39,9 @@ func (k *KeyAcc) CreateJWTAcc(url string, a *account.Account) (tokenString strin
 		//"roles":a.roles
 	}
 	return tokenString
+}
+
+func (k *KeyAcc) GetPublicKey() []byte {
+	kbyt := x509.MarshalPKCS1PublicKey(&k.privatekey.PublicKey)
+	return kbyt
 }

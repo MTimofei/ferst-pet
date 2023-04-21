@@ -15,7 +15,7 @@ import (
 
 func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
 	//r.UserAgent()
-	log.Println(r.Header)
+	//log.Println(r.Header)
 	cookieref, err := r.Cookie("RefJWT")
 	if err != nil {
 		myerr.ServesError(w, con.HashTempl, err)
@@ -30,12 +30,10 @@ func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
 
 	if cookiecli, err := r.Cookie("Client"); err != nil {
 		err = nil
-		// myerr.ServesError(w, con.HashTempl, err)
-		// return
 	} else {
-		log.Println("client cookei", *cookiecli)
-		token := con.KAcc.CreateJWTAcc(cookiecli.Value, a.Authdata)
-		cookieacc := cookiepkg.CreateCookieAcc(token, cookiecli.Value)
+		log.Println("client cookei", cookiecli.Value)
+		cookieacc := cookiepkg.CreateCookieAcc(con.KAcc.CreateJWTAcc(a.Authdata), cookiecli.Value)
+		log.Println("acc cookei", cookieacc.Value)
 		http.SetCookie(w, cookieacc)
 		http.Redirect(w, r, cookiecli.Value, http.StatusSeeOther)
 	}

@@ -27,7 +27,7 @@ func New(account *account.Account, r *http.Request) (a *Authe) {
 	return a
 }
 
-func nweAuthTrue(token *jwt.Token) (a *Authe) {
+func nweAuthTrueFromJWT(token *jwt.Token) (a *Authe) {
 	claims := token.Claims.(jwt.MapClaims)
 	id := claims["id"].(float64)
 	name := claims["name"].(string)
@@ -46,7 +46,7 @@ func AuthRefJWT(k *re.KeyRef, tokenString string) (a *Authe, err error) {
 	if token, err = k.VerifiedJWTRef(tokenString); err != nil {
 		return nil, err
 	}
-	a = nweAuthTrue(token)
+	a = nweAuthTrueFromJWT(token)
 	return a, nil
 
 }

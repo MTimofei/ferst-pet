@@ -1,12 +1,14 @@
 package web
 
 import (
+	"crypto"
 	"net/http"
 	"pet/pkg/pars"
 )
 
 type Connect struct {
-	PageHash *pars.HashTempl
+	PageHash  *pars.HashTempl
+	PublicKey *crypto.PublicKey
 }
 
 func (con *Connect) Rout() *http.ServeMux {
