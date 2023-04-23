@@ -16,7 +16,7 @@ var (
 	idjwtref int64 = 0
 	idjwtacc int64 = 0
 
-	addr      = flag.String("addr", "localhost:8889", "adderss server")
+	addr      = flag.String("addr", ":8889", "adderss server")
 	addrGRPC  = flag.String("addrGRPC", "localhost:8000", "adderss gRPC")
 	pathDirUi = flag.String("puth-dir-ui", "ui/HTML/", "puth ui directory")
 	addrMySQL = flag.String("adder-MySQL", "accaunt_ser:fZLma7@/ppa?parseTime=true", "adderss mysql")

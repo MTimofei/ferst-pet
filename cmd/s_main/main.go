@@ -17,8 +17,8 @@ var (
 )
 
 func main() {
-	//	h := pars.New("hi", "regstat")
-	//h.LoadHash(*pathDirUi)
+	// h := pars.New("hi", "regstat")
+	// h.LoadHash(*pathDirUi)
 
 	k, err := grpcclient.ConnectionGRPC(*addrGRPC)
 
@@ -27,7 +27,7 @@ func main() {
 	}
 
 	con := web.Connect{
-		//PageHash:  &h,
+		//	PageHash:  &h,
 		PublicKey: &k,
 	}
 	myerr.LogFatal(http.ListenAndServe(*addr, con.Rout()))

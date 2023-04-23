@@ -32,7 +32,12 @@ func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
 		err = nil
 	} else {
 		log.Println("client cookei", cookiecli.Value)
-		cookieacc := cookiepkg.CreateCookieAcc(con.KAcc.CreateJWTAcc(a.Authdata), cookiecli.Value)
+		token, err := con.KAcc.CreateJWTAcc(a.Authdata)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		cookieacc := cookiepkg.CreateCookieAcc(token, cookiecli.Value)
 		log.Println("acc cookei", cookieacc.Value)
 		http.SetCookie(w, cookieacc)
 		http.Redirect(w, r, cookiecli.Value, http.StatusSeeOther)

@@ -26,7 +26,7 @@ func GenerateRSAKey() (k *KeyAcc, err error) {
 	return k, nil
 }
 
-func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string) {
+func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error) {
 	*k.Id++
 	token := jwt.New(jwt.SigningMethodRS256)
 	token.Header["kid"] = *k.Id
@@ -38,7 +38,13 @@ func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string) {
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 		//"roles":a.roles
 	}
-	return tokenString
+
+	tokenString, err = token.SignedString(k.privatekey)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }
 
 func (k *KeyAcc) GetPublicKey() []byte {

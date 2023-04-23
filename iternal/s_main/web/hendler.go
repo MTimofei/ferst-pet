@@ -12,7 +12,7 @@ import (
 
 func (con *Connect) hendlerMain(w http.ResponseWriter, r *http.Request) {
 	cookieacc, err := r.Cookie("AccJWT")
-	log.Println(cookieacc.Value)
+	//log.Println(cookieacc.Value)
 	if err != nil {
 		if err.Error() != http.ErrNoCookie.Error() {
 			myerr.ServesError(w, con.PageHash, err)
@@ -24,6 +24,7 @@ func (con *Connect) hendlerMain(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "http://localhost:8889/", http.StatusSeeOther)
 		return
 	}
+	log.Println(cookieacc.Value)
 	token, err := jwt.VerificationJWTAcc(cookieacc.Value, con.PublicKey)
 	if err != nil {
 		log.Println(err)
