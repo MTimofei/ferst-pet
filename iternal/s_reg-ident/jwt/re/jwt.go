@@ -15,15 +15,12 @@ type KeyRef struct {
 	Id         *int64
 }
 
-func GeneratingEncryptionKeys() (key *KeyRef, err error) {
-	privatekey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+func GeneratingEncryptionKeys() (privatekey *ecdsa.PrivateKey, err error) {
+	privatekey, err = ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return nil, err
 	}
-	key = &KeyRef{
-		privatekey: privatekey,
-	}
-	return key, nil
+	return privatekey, nil
 }
 
 func (key *KeyRef) CreateJWTRefresh(account *account.Account) (tokenString string, err error) {
