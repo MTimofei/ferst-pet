@@ -13,10 +13,28 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func ConnectionGRPC(addrgrpc string) (key crypto.PublicKey, err error) {
+func StartResponsGRPC(addrgrpc *string, keytransfer chan crypto.PublicKey) {
+
+	go func() {
+		var timeSlip time.Duration
+		for {
+			key, err := ResponsGRPC(addrgrpc)
+			if err != nil {
+				log.Println("gorut grpc:", err)
+				timeSlip = 5 * time.Second
+			} else {
+				timeSlip = time.Minute
+			}
+			keytransfer <- key
+			time.Sleep(timeSlip)
+		}
+	}()
+}
+
+func ResponsGRPC(addrgrpc *string) (key crypto.PublicKey, err error) {
 	log.Println("grpc")
 
-	connect, err := grpc.Dial(addrgrpc, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	connect, err := grpc.Dial(*addrgrpc, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return &api.Key{}, fmt.Errorf("grpc wrr con: %v", err)
 	}

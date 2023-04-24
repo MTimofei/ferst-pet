@@ -23,22 +23,6 @@ func IntToStr(in []int) (out string) {
 	return out
 }
 
-// func StrToByte(in string) (out []byte, err error) {
-// 	var intermediateint []int
-// 	value := strings.Split(in, ",")
-// 	for _, nStr := range value {
-// 		nInt, err := strconv.Atoi(nStr)
-// 		if err != nil {
-// 			return []byte{}, err
-// 		}
-// 		intermediateint = append(intermediateint, nInt)
-// 	}
-// 	for _, nInt := range intermediateint {
-// 		out = append(out, byte(nInt))
-// 	}
-// 	return out, nil
-// }
-
 func StrToByte(in string) (out []byte) {
 	var intermediateint []int
 	value := strings.Split(in, ",")

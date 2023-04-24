@@ -22,7 +22,7 @@ func main() {
 	keshtempls := pars.New("hi", "regstat")
 	keshtempls.LoadHash(*pathDirUi)
 
-	key, err := grpcclient.ConnectionGRPC(*addrGRPC)
+	key, err := grpcclient.ResponsGRPC(addrGRPC)
 
 	if err != nil {
 		log.Println(err)

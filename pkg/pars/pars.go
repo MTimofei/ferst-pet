@@ -8,33 +8,33 @@ import (
 )
 
 type KeshTempl struct {
-	Hash map[string]*template.Template
+	Kesh map[string]*template.Template
 }
 
-func New(names ...string) (hash KeshTempl) {
-	hash.Hash = make(map[string]*template.Template)
+func New(names ...string) (kesh KeshTempl) {
+	kesh.Kesh = make(map[string]*template.Template)
 	for _, n := range names {
 		key := n
-		hash.Hash[key] = template.New("")
+		kesh.Kesh[key] = template.New("")
 	}
-	return hash
+	return kesh
 }
 
-func (h *KeshTempl) LoadHash(pathdir string) {
-	for key := range h.Hash {
+func (kesh *KeshTempl) LoadHash(pathdir string) {
+	for key := range kesh.Kesh {
 		path := fmt.Sprintf("%s%s.html", pathdir, key)
 		templ, err := template.ParseFiles(path)
 		if err != nil {
 			log.Fatal(err)
 		}
-		h.Hash[key] = templ
+		kesh.Kesh[key] = templ
 	}
 }
 
-func ParsPage(w http.ResponseWriter, namepage string, hesh *KeshTempl, content interface{}) (err error) {
+func ParsPage(w http.ResponseWriter, namepage string, kesh *KeshTempl, content interface{}) (err error) {
 	//w.WriteHeader(http.StatusOK)
 
-	err = hesh.Hash[namepage].Execute(w, content)
+	err = kesh.Kesh[namepage].Execute(w, content)
 	if err != nil {
 		return err
 	}
