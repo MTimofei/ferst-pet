@@ -9,9 +9,15 @@ Password hashing using the argon2 algorithm<br>
 </p>
 <p>
 <h3>Authentication</h3>
+Authorization by a pair of login password, and a refresh token 
+The refresh token is signed using the ES256 algorithm
 </p>
 <h2>In the plans for the future :</2>
 <p>
 <h3>Authorization</h3>
 Using the OAuth 2.0 protocol with an asynchronous encoding algorithm.
+</p>
+<p>
+<h3>Communication</h3>
+Transfer of public keys from the server to the client-server, using the gRPC API
 </p>
