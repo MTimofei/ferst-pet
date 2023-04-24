@@ -15,41 +15,33 @@ type KeyRef struct {
 	Id         *int64
 }
 
-// type ClaimsStoreg struct {
-// 	id   int       `json:"id"`
-// 	name string    `json:"name"`
-// 	iat  time.Time `json:"iat"`
-//	exp  time.Time `json:"exp"`
-// 	//"roles":a.roles
-// }
-
-func GeneratingEncryptionKeys() (k *KeyRef, err error) {
-	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+func GeneratingEncryptionKeys() (key *KeyRef, err error) {
+	privatekey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		return nil, err
 	}
-	k = &KeyRef{
-		privatekey: key,
+	key = &KeyRef{
+		privatekey: privatekey,
 	}
-	return
+	return key, nil
 }
 
-func (k *KeyRef) CreateJWTRefresh(a *account.Account) (tokenString string, err error) {
-	*k.Id++
+func (key *KeyRef) CreateJWTRefresh(account *account.Account) (tokenString string, err error) {
+	*key.Id++
 
-	tokenN := jwt.New(jwt.SigningMethodES256)
-	tokenN.Header["kid"] = *k.Id
-	tokenN.Header["name"] = "ref"
+	token := jwt.New(jwt.SigningMethodES256)
+	token.Header["kid"] = *key.Id
+	token.Header["name"] = "ref"
 
-	tokenN.Claims = jwt.MapClaims{
-		"id":   a.Id,
-		"name": a.Logname,
+	token.Claims = jwt.MapClaims{
+		"id":   account.Id,
+		"name": account.Logname,
 		"iat":  time.Now().Unix(),
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 		//"roles":a.roles
 	}
 
-	tokenString, err = tokenN.SignedString(k.privatekey)
+	tokenString, err = token.SignedString(key.privatekey)
 	if err != nil {
 		return "", err
 	}
@@ -57,9 +49,9 @@ func (k *KeyRef) CreateJWTRefresh(a *account.Account) (tokenString string, err e
 	return tokenString, nil
 }
 
-func (k *KeyRef) VerifiedJWTRef(tokenString string) (token *jwt.Token, err error) {
+func (key *KeyRef) VerifiedJWTRef(tokenString string) (token *jwt.Token, err error) {
 	token, err = jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return k.privatekey.Public(), nil
+		return key.privatekey.Public(), nil
 	})
 	if err != nil {
 		return token, err

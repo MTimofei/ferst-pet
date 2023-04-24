@@ -5,31 +5,30 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"pet/api"
+	"pet/integration_auth/api"
 
 	"google.golang.org/grpc"
 )
 
 type GRPCSer struct {
 	api.UnimplementedGreeterServer
-	K []byte
+	Key []byte
 }
 
 func (s *GRPCSer) GetKey(ctx context.Context, r *api.Request) (k *api.Key, err error) {
-	k = &api.Key{PublicKey: s.K}
+	k = &api.Key{PublicKey: s.Key}
 	return k, nil
 }
 
-func ConnectionGRPC(addrgrcp string, kbyt []byte) {
+func StartServerGRPC(addrgrcp string, keybyts []byte) {
 	log.Println("grpc")
-	// n := &net.ListenConfig{}
-	// lis, err := n.Listen(context.TODO(), "tcp", addrgrcp)
+
 	lis, err := net.Listen("tcp", addrgrcp)
 	if err != nil {
 		log.Fatal(fmt.Errorf("grpc failed to listen: %v", err))
 	}
 	s := grpc.NewServer()
-	api.RegisterGreeterServer(s, &GRPCSer{K: kbyt})
+	api.RegisterGreeterServer(s, &GRPCSer{Key: keybyts})
 	go func() {
 		err := s.Serve(lis)
 		log.Fatal(err)

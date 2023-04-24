@@ -38,29 +38,29 @@ func main() {
 	}
 	defer dbcon.Close()
 
-	kref, err := re.GeneratingEncryptionKeys()
+	keyref, err := re.GeneratingEncryptionKeys()
 	if err != nil {
 		log.Fatal(err)
 	}
-	kref.Id = &idjwtref
+	keyref.Id = &idjwtref
 
-	kacc, err := ac.GenerateRSAKey()
+	keyacc, err := ac.GenerateRSAKey()
 	if err != nil {
 		log.Fatal(err)
 	}
-	kacc.Id = &idjwtacc
+	keyacc.Id = &idjwtacc
 
 	hesh := pars.New("reg", "auth", "regstat", "hi")
 	hesh.LoadHash(*pathDirUi)
 
 	con := web.Connect{
 		MySQL:     dbcon,
-		KRef:      kref,
-		KAcc:      kacc,
-		HashTempl: &hesh,
+		KeyRef:    keyref,
+		KeyAcc:    keyacc,
+		KeshTempl: &hesh,
 	}
 
-	grpcser.ConnectionGRPC(*addrGRPC, kacc.GetPublicKey())
+	grpcser.StartServerGRPC(*addrGRPC, keyacc.GetPublicKey())
 	con.StartServe(addr)
 	log.Println("ALL READY")
 	<-block

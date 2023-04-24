@@ -29,10 +29,10 @@ func New(account *account.Account, r *http.Request) (a *Authe) {
 
 func nweAuthTrueFromJWT(token *jwt.Token) (a *Authe) {
 	claims := token.Claims.(jwt.MapClaims)
-	id := claims["id"].(float64)
+	id := int(claims["id"].(float64))
 	name := claims["name"].(string)
 
-	account := account.New(int(id), name, "", "")
+	account := account.New(id, name, "", "")
 	a = &Authe{
 		password: "",
 		Authdata: account,
@@ -52,9 +52,9 @@ func AuthRefJWT(k *re.KeyRef, tokenString string) (a *Authe, err error) {
 }
 
 func (a *Authe) Compare() {
-	inkey := a.Authdata.Saltauth.GeneraterKey([]byte(a.password))
-	dbkey := convert.StrToByte(a.Authdata.Key)
-	if reflect.DeepEqual(inkey, dbkey) {
+	inhashpassword := a.Authdata.Saltauth.GeneraterHashPassword([]byte(a.password))
+	dbhashpassword := convert.StrToByte(a.Authdata.HashPassword)
+	if reflect.DeepEqual(inhashpassword, dbhashpassword) {
 		a.isit = true
 	} else {
 		a.isit = false
@@ -62,9 +62,9 @@ func (a *Authe) Compare() {
 
 }
 
-func (a *Authe) CreateJWTRef(K *re.KeyRef) (token string, err error) {
+func (a *Authe) CreateJWTRefresh(key *re.KeyRef) (token string, err error) {
 	if a.isit {
-		token, err = K.CreateJWTRefresh(a.Authdata)
+		token, err = key.CreateJWTRefresh(a.Authdata)
 		if err != nil {
 			return "", err
 		}

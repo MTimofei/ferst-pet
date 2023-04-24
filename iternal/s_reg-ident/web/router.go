@@ -13,17 +13,15 @@ import (
 
 type Connect struct {
 	MySQL     *sql.DB
-	KRef      *re.KeyRef
-	KAcc      *ac.KeyAcc
-	HashTempl *pars.HashTempl
+	KeyRef    *re.KeyRef
+	KeyAcc    *ac.KeyAcc
+	KeshTempl *pars.HashTempl
 }
 
 func (con *Connect) StartServe(addr *string) {
 	log.Println("ser")
 	n := &net.ListenConfig{}
-	//context.WithTimeout(context.Background(), 5*time.Millisecond)
 	lis, err := n.Listen(context.Background(), "tcp", *addr)
-	//lis, err := net.Listen("tcp", *addr)
 	if err != nil {
 		log.Fatal(err)
 	}

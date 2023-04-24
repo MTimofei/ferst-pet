@@ -11,7 +11,7 @@ type Account struct {
 
 func NewAccountFromJWT(token *jwt.Token) *Account {
 	claims := token.Claims.(jwt.MapClaims)
-	id := claims["id"].(int64)
+	id := int64(claims["id"].(float64))
 	name := claims["name"].(string)
 
 	var a = &Account{

@@ -1,4 +1,4 @@
-package jwt
+package jwtpkg
 
 import (
 	"crypto"
@@ -6,9 +6,9 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func VerificationJWTAcc(tokenstring string, k *crypto.PublicKey) (token *jwt.Token, err error) {
+func VerificationJWTAcc(tokenstring string, key *crypto.PublicKey) (token *jwt.Token, err error) {
 	token, err = jwt.Parse(tokenstring, func(token *jwt.Token) (interface{}, error) {
-		return k, nil
+		return *key, nil
 	})
 	if err != nil {
 		return token, err

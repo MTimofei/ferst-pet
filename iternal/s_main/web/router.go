@@ -7,8 +7,9 @@ import (
 )
 
 type Connect struct {
-	PageHash  *pars.HashTempl
+	PageKesh  *pars.HashTempl
 	PublicKey *crypto.PublicKey
+	UrlServer *string
 }
 
 func (con *Connect) Rout() *http.ServeMux {

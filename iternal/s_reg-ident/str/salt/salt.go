@@ -41,8 +41,8 @@ func (salt *Salt) GetDynamicSalt() (dunamicsalt []byte) {
 	return dunamicsalt
 }
 
-func (salt *Salt) GeneraterKey(pasbyte []byte) (kay []byte) {
-	kay = argon2.Key(pasbyte, salt.static, 12, 32*256, 4, 32)
-	kay = argon2.Key(kay, salt.dynamic, 12, 32*256, 4, 32)
-	return kay
+func (salt *Salt) GeneraterHashPassword(pasbyte []byte) (hashpassword []byte) {
+	hashpassword = argon2.Key(pasbyte, salt.static, 12, 32*256, 4, 32)
+	hashpassword = argon2.Key(hashpassword, salt.dynamic, 12, 32*256, 4, 32)
+	return hashpassword
 }

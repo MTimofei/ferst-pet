@@ -15,21 +15,21 @@ type KeyAcc struct {
 	Id         *int64
 }
 
-func GenerateRSAKey() (k *KeyAcc, err error) {
-	key, err := rsa.GenerateMultiPrimeKey(rand.Reader, 4, 2048)
+func GenerateRSAKey() (key *KeyAcc, err error) {
+	privatekey, err := rsa.GenerateMultiPrimeKey(rand.Reader, 4, 2048)
 	if err != nil {
 		return nil, err
 	}
-	k = &KeyAcc{
-		privatekey: key,
+	key = &KeyAcc{
+		privatekey: privatekey,
 	}
-	return k, nil
+	return key, nil
 }
 
-func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error) {
-	*k.Id++
+func (key *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error) {
+	*key.Id++
 	token := jwt.New(jwt.SigningMethodRS256)
-	token.Header["kid"] = *k.Id
+	token.Header["kid"] = *key.Id
 	token.Header["name"] = "acc"
 	token.Claims = jwt.MapClaims{
 		"id":   a.Id,
@@ -39,7 +39,7 @@ func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error
 		//"roles":a.roles
 	}
 
-	tokenString, err = token.SignedString(k.privatekey)
+	tokenString, err = token.SignedString(key.privatekey)
 	if err != nil {
 		return "", err
 	}
@@ -47,7 +47,7 @@ func (k *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error
 	return tokenString, nil
 }
 
-func (k *KeyAcc) GetPublicKey() []byte {
-	kbyt := x509.MarshalPKCS1PublicKey(&k.privatekey.PublicKey)
-	return kbyt
+func (key *KeyAcc) GetPublicKey() []byte {
+	keybyts := x509.MarshalPKCS1PublicKey(&key.privatekey.PublicKey)
+	return keybyts
 }

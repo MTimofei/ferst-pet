@@ -13,7 +13,7 @@ func (con *Connect) ValidUrl(fn func(w http.ResponseWriter, r *http.Request)) ht
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
 		if m == nil {
-			myerr.ServesError(w, con.PageHash, errors.New("not valid path"))
+			myerr.ServesError(w, con.PageKesh, errors.New("not valid path"))
 			return
 		}
 		fn(w, r)

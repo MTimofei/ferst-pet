@@ -11,26 +11,26 @@ type RegDataIn struct {
 	email     string
 }
 
-func New(r *http.Request) (*RegDataIn, error) {
+func New(r *http.Request) (regdatanewuser *RegDataIn, err error) {
 
 	if r.Method != "POST" {
 		err := fmt.Errorf("method not post")
 		return nil, err
 	}
 
-	var rd = &RegDataIn{}
-	rd.loginname = r.FormValue("name")
-	rd.password = r.FormValue("password")
-	rd.email = r.FormValue("email")
+	regdatanewuser = &RegDataIn{}
+	regdatanewuser.loginname = r.FormValue("name")
+	regdatanewuser.password = r.FormValue("password")
+	regdatanewuser.email = r.FormValue("email")
 
-	return rd, nil
+	return regdatanewuser, nil
 }
 
-func (rd *RegDataIn) GetPass() (pass []byte) {
-	pass = []byte(rd.password)
-	return pass
+func (regdatanewuser *RegDataIn) GetPass() (passwordbytes []byte) {
+	passwordbytes = []byte(regdatanewuser.password)
+	return passwordbytes
 }
 
-func (rd *RegDataIn) GetRDIn() (logname, email string) {
-	return rd.loginname, rd.email
+func (regdatanewuser *RegDataIn) GetRDIn() (logname, email string) {
+	return regdatanewuser.loginname, regdatanewuser.email
 }
