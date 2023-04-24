@@ -51,3 +51,7 @@ func (key *KeyAcc) GetPublicKey() []byte {
 	keybyts := x509.MarshalPKCS1PublicKey(&key.privatekey.PublicKey)
 	return keybyts
 }
+
+func (key *KeyAcc) Update(privateacckey *rsa.PrivateKey) {
+	key.privatekey = privateacckey
+}
