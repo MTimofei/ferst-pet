@@ -15,15 +15,12 @@ type KeyAcc struct {
 	Id         *int64
 }
 
-func GenerateRSAKey() (key *KeyAcc, err error) {
-	privatekey, err := rsa.GenerateMultiPrimeKey(rand.Reader, 4, 2048)
+func GenerateRSAKey() (privatekey *rsa.PrivateKey, err error) {
+	privatekey, err = rsa.GenerateMultiPrimeKey(rand.Reader, 4, 2048)
 	if err != nil {
 		return nil, err
 	}
-	key = &KeyAcc{
-		privatekey: privatekey,
-	}
-	return key, nil
+	return privatekey, nil
 }
 
 func (key *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err error) {
@@ -50,4 +47,8 @@ func (key *KeyAcc) CreateJWTAcc(a *account.Account) (tokenString string, err err
 func (key *KeyAcc) GetPublicKey() []byte {
 	keybyts := x509.MarshalPKCS1PublicKey(&key.privatekey.PublicKey)
 	return keybyts
+}
+
+func (key *KeyAcc) Update(privatekey *rsa.PrivateKey) {
+	key.privatekey = privatekey
 }
