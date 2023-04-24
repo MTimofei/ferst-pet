@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-type HashTempl struct {
+type KeshTempl struct {
 	Hash map[string]*template.Template
 }
 
-func New(names ...string) (hash HashTempl) {
+func New(names ...string) (hash KeshTempl) {
 	hash.Hash = make(map[string]*template.Template)
 	for _, n := range names {
 		key := n
@@ -20,7 +20,7 @@ func New(names ...string) (hash HashTempl) {
 	return hash
 }
 
-func (h *HashTempl) LoadHash(pathdir string) {
+func (h *KeshTempl) LoadHash(pathdir string) {
 	for key := range h.Hash {
 		path := fmt.Sprintf("%s%s.html", pathdir, key)
 		templ, err := template.ParseFiles(path)
@@ -31,7 +31,7 @@ func (h *HashTempl) LoadHash(pathdir string) {
 	}
 }
 
-func ParsPage(w http.ResponseWriter, namepage string, hesh *HashTempl, content interface{}) (err error) {
+func ParsPage(w http.ResponseWriter, namepage string, hesh *KeshTempl, content interface{}) (err error) {
 	//w.WriteHeader(http.StatusOK)
 
 	err = hesh.Hash[namepage].Execute(w, content)

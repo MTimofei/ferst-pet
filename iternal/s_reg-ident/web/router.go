@@ -15,7 +15,7 @@ type Connect struct {
 	MySQL     *sql.DB
 	KeyRef    *re.KeyRef
 	KeyAcc    *ac.KeyAcc
-	KeshTempl *pars.HashTempl
+	KeshTempl *pars.KeshTempl
 }
 
 func (con *Connect) StartServe(addr *string) {

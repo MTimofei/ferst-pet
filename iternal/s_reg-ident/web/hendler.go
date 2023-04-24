@@ -19,24 +19,20 @@ func (con *Connect) handlerMain(w http.ResponseWriter, r *http.Request) {
 		myerr.ServesError(w, con.KeshTempl, err)
 		return
 	}
-
 	userverific, err := authe.AuthRefJWT(con.KeyRef, cookieref.Value)
 	if err != nil {
 		myerr.ServesError(w, con.KeshTempl, err)
 		return
 	}
-
 	if cookiecli, err := r.Cookie("Client"); err != nil {
 		err = nil
 	} else {
-		log.Println("client cookei", cookiecli.Value)
 		token, err := con.KeyAcc.CreateJWTAcc(userverific.Authdata)
 		if err != nil {
 			log.Println(err)
 			return
 		}
 		cookieacc := cookiepkg.CreateCookieAcc(token, cookiecli.Value)
-		log.Println("acc cookei", cookieacc.Value)
 		http.SetCookie(w, cookieacc)
 		http.Redirect(w, r, cookiecli.Value, http.StatusSeeOther)
 	}

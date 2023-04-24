@@ -7,7 +7,7 @@ import (
 )
 
 type Connect struct {
-	PageKesh  *pars.HashTempl
+	PageKesh  *pars.KeshTempl
 	PublicKey *crypto.PublicKey
 	UrlServer *string
 }

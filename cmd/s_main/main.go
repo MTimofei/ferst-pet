@@ -10,7 +10,6 @@ import (
 	"pet/pkg/pars"
 )
 
-// crypto/ecdsa: verification error
 var (
 	urlserves = "http://localhost:8888/main"
 

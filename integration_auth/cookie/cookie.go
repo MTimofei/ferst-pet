@@ -23,7 +23,7 @@ func createCookieClientServer(urlclient *string) (cookie *http.Cookie) {
 	return cookie
 }
 
-func HandlingCookiesClients(urlserves *string, pagekesh *pars.HashTempl, key *crypto.PublicKey, w http.ResponseWriter, r *http.Request) (token *jwt.Token, err error) {
+func HandlingCookiesClients(urlserves *string, pagekesh *pars.KeshTempl, key *crypto.PublicKey, w http.ResponseWriter, r *http.Request) (token *jwt.Token, err error) {
 	cookieacc, err := r.Cookie("AccJWT")
 	if err != nil {
 		if err.Error() != http.ErrNoCookie.Error() {
