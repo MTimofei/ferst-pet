@@ -9,7 +9,7 @@ import (
 )
 
 func (con *Connect) hendlerMain(w http.ResponseWriter, r *http.Request) {
-	token, err := cookie.HandlingCookiesClients(con.UrlServer, con.PageKesh, con.PublicKey, w, r)
+	token, err := cookie.HandlingCookiesClients(con.UrlServer, con.PageKesh, con.PublicKey.Key, w, r)
 	if err != nil {
 		myerr.ServesError(w, con.PageKesh, err)
 		return

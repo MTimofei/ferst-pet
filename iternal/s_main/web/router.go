@@ -1,14 +1,14 @@
 package web
 
 import (
-	"crypto"
 	"net/http"
+	realtime "pet/integration_auth/real-time"
 	"pet/pkg/pars"
 )
 
 type Connect struct {
 	PageKesh  *pars.KeshTempl
-	PublicKey *crypto.PublicKey
+	PublicKey *realtime.PublicKey
 	UrlServer *string
 }
 
