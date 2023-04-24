@@ -5,7 +5,10 @@
 <h2>Ready :</h2>
 <p>
 <h3>Registration</h3> 
-Password hashing using the argon2 algorithm<br>
+Password hashing using the argon2 algorithm
+<p>
+<h3>Communication</h3>
+Transfer of public keys from the server to the client-server, using the gRPC API
 </p>
 <p>
 <h3>Authentication</h3>
@@ -17,7 +20,10 @@ The refresh token is signed using the ES256 algorithm
 <h3>Authorization</h3>
 Using the OAuth 2.0 protocol with an asynchronous encoding algorithm.
 </p>
-<p>
 <h3>Communication</h3>
-Transfer of public keys from the server to the client-server, using the gRPC API
+Server synchronization<br>
+Implement sending requests for keys at time intervals<br>
+</p>
+<h3> Safety</h3>
+Generating new keys at time intervals for each encryption algorithm
 </p>
