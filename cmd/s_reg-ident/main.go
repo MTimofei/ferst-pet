@@ -2,18 +2,23 @@ package main
 
 //accaunt_ser fZLma7
 import (
+	"crypto/ecdsa"
+	"crypto/rsa"
 	"flag"
 	"log"
 	"pet/iternal/s_reg-ident/grpcser"
 	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
+	realtime "pet/iternal/s_reg-ident/real-time"
 	"pet/iternal/s_reg-ident/web"
 	"pet/pkg/pars"
 	"pet/pkg/sql/mysqlcon"
 )
 
 var (
-	block = make(chan int)
+	blockmainfn     = make(chan int)
+	transportrefkey = make(chan *ecdsa.PrivateKey)
+	transportacckey = make(chan *rsa.PrivateKey)
 
 	idjwtref int64 = 0
 	idjwtacc int64 = 0
@@ -38,30 +43,31 @@ func main() {
 	}
 	defer dbcon.Close()
 
-	keyref, err := re.GeneratingEncryptionKeys()
-	if err != nil {
-		log.Fatal(err)
+	keyref := &re.KeyRef{
+		Id: &idjwtref,
 	}
-	keyref.Id = &idjwtref
-
-	keyacc, err := ac.GenerateRSAKey()
-	if err != nil {
-		log.Fatal(err)
+	keyacc := &ac.KeyAcc{
+		Id: &idjwtacc,
 	}
-	keyacc.Id = &idjwtacc
 
 	hesh := pars.New("reg", "auth", "regstat", "hi")
 	hesh.LoadHash(*pathDirUi)
 
-	con := web.Connect{
+	con := &web.Connect{
 		MySQL:     dbcon,
 		KeyRef:    keyref,
 		KeyAcc:    keyacc,
 		KeshTempl: &hesh,
 	}
 
-	grpcser.StartServerGRPC(*addrGRPC, keyacc.GetPublicKey())
+	go realtime.RealTimeGenerateEncryptionKeys(transportrefkey)
+	go realtime.RealTimeGenerateRSAKey(transportacckey)
+
+	go realtime.UpdateRefPrivateKey(con, transportrefkey)
+	go realtime.UpdateAccPrivateKey(con, transportacckey)
+
+	grpcser.StartServerGRPC(*addrGRPC, keyacc)
 	con.StartServe(addr)
 	log.Println("ALL READY")
-	<-block
+	<-blockmainfn
 }
