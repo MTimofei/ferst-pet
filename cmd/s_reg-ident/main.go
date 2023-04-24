@@ -13,6 +13,8 @@ import (
 )
 
 var (
+	block = make(chan int)
+
 	idjwtref int64 = 0
 	idjwtacc int64 = 0
 
@@ -27,8 +29,6 @@ func main() {
 	// n := 40
 	// fmt.Printf("Установка ограничения количества горутин на %d процессоров\n", n)
 	// runtime.GOMAXPROCS(n)
-
-	var block = make(chan int)
 
 	flag.Parse()
 
