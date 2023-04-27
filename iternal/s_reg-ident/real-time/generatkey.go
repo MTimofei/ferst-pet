@@ -19,7 +19,7 @@ func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey) {
 			timesleep = 5 * time.Second
 		} else {
 			transportrefkey <- keyref
-			timesleep = 5 * time.Minute
+			timesleep = 1 * time.Hour
 		}
 		log.Println("RealTimeGenerateEncryptionKeys")
 		time.Sleep(timesleep)
