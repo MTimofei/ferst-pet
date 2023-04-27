@@ -23,8 +23,8 @@ func (s *GRPCSer) GetKey(ctx context.Context, r *api.Request) (k *api.Key, err e
 
 func StartServerGRPC(addrgrcp string, keyacc *ac.KeyAcc) {
 	log.Println("grpc")
-
-	lis, err := net.Listen("tcp", addrgrcp)
+	n := &net.ListenConfig{}
+	lis, err := n.Listen(context.Background(), "tcp", addrgrcp)
 	if err != nil {
 		log.Fatal(fmt.Errorf("grpc failed to listen: %v", err))
 	}

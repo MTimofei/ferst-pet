@@ -26,12 +26,12 @@ func (con *Connect) StartServe(addr *string) {
 		log.Fatal(err)
 	}
 	go func() {
-		err := http.Serve(lis, con.Router())
+		err := http.Serve(lis, con.router())
 		log.Fatal(err)
 	}()
 }
 
-func (con *Connect) Router() (mux *http.ServeMux) {
+func (con *Connect) router() (mux *http.ServeMux) {
 
 	mux = http.NewServeMux()
 	mux.HandleFunc("/", con.ValidUrl(con.handlerMain))
