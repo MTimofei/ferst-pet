@@ -56,6 +56,8 @@ func (key *KeyRef) VerifiedJWTRef(tokenString string) (token *jwt.Token, err err
 	return token, nil
 }
 
+
 func (key *KeyRef) Update(privaterefkey *ecdsa.PrivateKey) {
 	key.privatekey = privaterefkey
+
 }

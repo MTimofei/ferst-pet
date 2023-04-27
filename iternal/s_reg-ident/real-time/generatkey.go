@@ -11,6 +11,7 @@ import (
 
 func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey) {
 
+
 	var timesleep time.Duration
 	for {
 		keyref, err := re.GeneratingEncryptionKeys()
@@ -42,4 +43,4 @@ func RealTimeGenerateRSAKey(transportacckey chan *rsa.PrivateKey) {
 		time.Sleep(timesleep)
 	}
 
-}
+

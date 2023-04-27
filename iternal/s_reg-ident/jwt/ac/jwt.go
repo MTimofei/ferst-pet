@@ -49,6 +49,8 @@ func (key *KeyAcc) GetPublicKey() []byte {
 	return keybyts
 }
 
+
 func (key *KeyAcc) Update(privateacckey *rsa.PrivateKey) {
 	key.privatekey = privateacckey
+
 }
