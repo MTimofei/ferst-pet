@@ -1,6 +1,18 @@
 <h1>Ferst Pet Projecr</h1> 
 
 <h2>Microservice for registration, identification and authorization.</h2>
+<p>
+<h3>Steak of Technology</h3> 
+Golandg<br>
+REST API<br>
+gRPC<br>
+JWT<br>
+Argon2<br>
+Rsa<br>
+ECDA<br>
+mySQL<br>
+<p>
+
 
 <h2>Implemented:</h2>
 <p>
@@ -20,10 +32,7 @@ The refresh token is signed using the ES256 algorithm
 Generating new keys at time intervals for each encryption algorithm<br>
 </p>
 <h2>In the plans for the future:</2>
-<p>
-<h3>Authorization</h3>
-Using the OAuth 2.0 protocol with an asynchronous encoding algorithm<br>
-</p>
+
 <h3>Communication</h3>
 Servers synchronization<br>
 
