@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"pet/integration_auth/api"
+	"pet/integration_verification/api"
 	"pet/iternal/s_reg-ident/jwt/ac"
 
 	"google.golang.org/grpc"

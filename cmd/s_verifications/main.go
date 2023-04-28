@@ -6,6 +6,7 @@ import (
 	"crypto/rsa"
 	"flag"
 	"log"
+	"pet/integration_verification/synchron"
 	"pet/iternal/s_reg-ident/grpcser"
 	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
@@ -16,7 +17,7 @@ import (
 )
 
 var (
-	blockmainfn     = make(chan int)
+	block           = make(chan int)
 	transportrefkey = make(chan *ecdsa.PrivateKey)
 	transportacckey = make(chan *rsa.PrivateKey)
 
@@ -30,12 +31,10 @@ var (
 )
 
 func main() {
-	// fmt.Printf("Ограничение количества горутин: %d\n", runtime.GOMAXPROCS(0))
-	// n := 40
-	// fmt.Printf("Установка ограничения количества горутин на %d процессоров\n", n)
-	// runtime.GOMAXPROCS(n)
 
 	flag.Parse()
+
+	synchron.StartSystem()
 
 	dbcon, err := mysqlcon.OpenMySQLDB(addrMySQL)
 	if err != nil {
@@ -60,14 +59,10 @@ func main() {
 		KeshTempl: &hesh,
 	}
 
-	go realtime.RealTimeGenerateEncryptionKeys(transportrefkey)
-	go realtime.RealTimeGenerateRSAKey(transportacckey)
-
-	go realtime.UpdateRefPrivateKey(con, transportrefkey)
-	go realtime.UpdateAccPrivateKey(con, transportacckey)
+	realtime.StartUpdataKey(block, con, transportrefkey, transportacckey)
 
 	grpcser.StartServerGRPC(*addrGRPC, keyacc)
 	con.StartServe(addr)
 	log.Println("ALL READY")
-	<-blockmainfn
+	<-block
 }

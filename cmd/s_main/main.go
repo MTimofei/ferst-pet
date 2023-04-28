@@ -4,15 +4,15 @@ import (
 	"crypto/rsa"
 	"flag"
 	"net/http"
-	"pet/integration_auth/grpcclient"
-	realtime "pet/integration_auth/real-time"
+	realtime "pet/integration_verification/real-time"
+	"pet/integration_verification/synchron"
 	"pet/iternal/s_main/web"
 	"pet/pkg/myerr"
 	"pet/pkg/pars"
 )
 
 var (
-	//blikmainfunc = make(chan int)
+	block       = make(chan int)
 	keytransfer = make(chan *rsa.PublicKey)
 
 	urlserves = "http://localhost:8888/main"
@@ -23,6 +23,10 @@ var (
 )
 
 func main() {
+	flag.Parse()
+
+	synchron.StartSystem()
+
 	keshtempls := pars.New("hi", "regstat")
 	keshtempls.LoadHash(*pathDirUi)
 
@@ -32,7 +36,7 @@ func main() {
 		PublicKey: key,
 		UrlServer: &urlserves,
 	}
-	go grpcclient.RealTimeGetKyeМiaGRPC(addrGRPC, keytransfer)
-	go realtime.UpdatePublicKey(key, keytransfer)
+	realtime.StartUpdate(addrGRPC, key, keytransfer, block)
 	myerr.LogFatal(http.ListenAndServe(*addr, con.Rout()))
+	<-block
 }

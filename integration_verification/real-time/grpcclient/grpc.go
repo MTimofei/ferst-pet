@@ -6,7 +6,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"log"
-	"pet/integration_auth/api"
+	"pet/integration_verification/api"
 	"time"
 
 	"google.golang.org/grpc"

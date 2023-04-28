@@ -1,59 +1,35 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 )
 
-var tarns1 = make(chan int)
-var tarns2 = make(chan int)
-
-type t struct {
-	A int
-	B int
-}
-
-func (n *t) f(a1, b1 int) {
-	n.A = a1
-	n.B = b1
-}
+// fmt.Printf("Ограничение количества горутин: %d\n", runtime.GOMAXPROCS(0))
+// n := 40
+// fmt.Printf("Установка ограничения количества горутин на %d процессоров\n", n)
+// runtime.GOMAXPROCS(n)
 
 func main() {
-	var n t
-	go func() {
-		var i int = 1
-		for {
-			i++
-			tarns1 <- i
-			time.Sleep(time.Second)
-		}
-	}()
-	go func() {
-		var x int = 1
-		for {
-			x = x + 9
-			tarns2 <- x
-			time.Sleep(time.Second)
-		}
-	}()
-	go func() {
-		for {
-			select {
-			case a := <-tarns1:
-				n.A = a
-			}
-		}
-	}()
-	go func() {
-		for {
-			select {
-			case b := <-tarns2:
-				n.B = b
-			}
-		}
-	}()
-	for {
-		fmt.Println(n.A, n.B)
-	}
 
+	now := time.Now()
+	t := now.Round(5 * time.Minute)
+	detect := t.Unix() - now.Unix()
+	log.Println(now.Unix())
+	log.Println(t.Unix())
+	log.Println(detect)
+	if detect > 0 {
+		req := now.Unix() + detect
+		log.Println(req)
+		//reqi := int(req)
+		log.Println(time.Unix(req, 0))
+		time.Sleep(time.Duration(req) * time.Millisecond)
+		log.Println(time.Now().UTC())
+	} else {
+		req := t.Unix() + 300
+		log.Println(req)
+		log.Println(time.Unix(req, 0))
+		time.Sleep(time.Duration(req) * time.Millisecond)
+		log.Println(time.Now().UTC())
+	}
 }
