@@ -4,8 +4,7 @@ import (
 	"crypto/rsa"
 	"log"
 	"net/http"
-	"pet/integration_auth/jwtpkg"
-	"pet/pkg/pars"
+	"pet/integration_verification/real-time/grpcclient/cookie/jwtpkg"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -23,7 +22,7 @@ func createCookieClientServer(urlclient *string) (cookie *http.Cookie) {
 	return cookie
 }
 
-func HandlingCookiesClients(urlserves *string, pagekesh *pars.KeshTempl, key *rsa.PublicKey, w http.ResponseWriter, r *http.Request) (token *jwt.Token, err error) {
+func HandlingCookiesClients(urlserves *string, key *rsa.PublicKey, w http.ResponseWriter, r *http.Request) (token *jwt.Token, err error) {
 	cookieacc, err := r.Cookie("AccJWT")
 	if err != nil {
 		if err.Error() != http.ErrNoCookie.Error() {

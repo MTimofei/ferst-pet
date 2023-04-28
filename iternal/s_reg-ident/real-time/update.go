@@ -7,10 +7,6 @@ import (
 	"pet/iternal/s_reg-ident/web"
 )
 
-
-
-
-
 func UpdateRefPrivateKey(con *web.Connect, transportrefkey chan *ecdsa.PrivateKey) {
 	for privatekey := range transportrefkey {
 		con.KeyRef.Update(privatekey)

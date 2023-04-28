@@ -2,14 +2,14 @@ package web
 
 import (
 	"net/http"
-	"pet/integration_auth/cookie"
+	"pet/integration_verification/real-time/grpcclient/cookie"
 	"pet/iternal/s_main/str"
 	"pet/pkg/myerr"
 	"pet/pkg/pars"
 )
 
 func (con *Connect) hendlerMain(w http.ResponseWriter, r *http.Request) {
-	token, err := cookie.HandlingCookiesClients(con.UrlServer, con.PageKesh, con.PublicKey.Key, w, r)
+	token, err := cookie.HandlingCookiesClients(con.UrlServer, con.PublicKey.Key, w, r)
 	if err != nil {
 		myerr.ServesError(w, con.PageKesh, err)
 		return
