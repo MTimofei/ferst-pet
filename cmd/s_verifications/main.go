@@ -14,6 +14,7 @@ import (
 	"pet/iternal/s_reg-ident/web"
 	"pet/pkg/pars"
 	"pet/pkg/sql/mysqlcon"
+	"runtime"
 )
 
 var (
@@ -21,8 +22,9 @@ var (
 	transportrefkey = make(chan *ecdsa.PrivateKey)
 	transportacckey = make(chan *rsa.PrivateKey)
 
-	idjwtref int64 = 0
-	idjwtacc int64 = 0
+	idjwtref   int64  = 0
+	idjwtacc   int64  = 0
+	nameserves string = "verifications"
 
 	addr      = flag.String("addr", ":8889", "adderss server")
 	addrGRPC  = flag.String("addrGRPC", "localhost:8000", "adderss gRPC")
@@ -31,10 +33,10 @@ var (
 )
 
 func main() {
-
+	runtime.GOMAXPROCS(8)
 	flag.Parse()
 
-	synchron.StartSystem()
+	synchron.StartSystem(&nameserves)
 
 	dbcon, err := mysqlcon.OpenMySQLDB(addrMySQL)
 	if err != nil {
@@ -53,14 +55,13 @@ func main() {
 	hesh.LoadHash(*pathDirUi)
 
 	con := &web.Connect{
-		MySQL:     dbcon,
-		KeyRef:    keyref,
-		KeyAcc:    keyacc,
-		KeshTempl: &hesh,
+		MySQL:  dbcon,
+		KeyRef: keyref,
+		KeyAcc: keyacc,
+		// KeshTempl: &hesh,
 	}
 
-	realtime.StartUpdataKey(block, con, transportrefkey, transportacckey)
-
+	realtime.StartUpdataKey(con, transportrefkey, transportacckey)
 	grpcser.StartServerGRPC(*addrGRPC, keyacc)
 	con.StartServe(addr)
 	log.Println("ALL READY")

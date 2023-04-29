@@ -5,6 +5,7 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"pet/iternal/s_reg-ident/str/account"
+	"sync"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -56,8 +57,9 @@ func (key *KeyRef) VerifiedJWTRef(tokenString string) (token *jwt.Token, err err
 	return token, nil
 }
 
-
 func (key *KeyRef) Update(privaterefkey *ecdsa.PrivateKey) {
+	mutex := sync.Mutex{}
+	mutex.Lock()
 	key.privatekey = privaterefkey
-
+	mutex.Unlock()
 }

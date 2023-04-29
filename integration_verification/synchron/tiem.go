@@ -2,21 +2,26 @@ package synchron
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
 )
 
-func StartSystem() {
-
-	client := http.Client{}
-	res, err := client.Get("http://localhost:7000/")
+func StartSystem(nameserves *string) {
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:7000/", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	body, err := ioutil.ReadAll(res.Body)
+	req.Header.Set("User-Agent", fmt.Sprintf("Serves %s", *nameserves))
+	client := http.Client{}
+
+	res, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -6,11 +6,13 @@ import (
 	"log"
 	"pet/iternal/s_reg-ident/jwt/ac"
 	"pet/iternal/s_reg-ident/jwt/re"
+	"sync"
 	"time"
 )
 
-func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey) {
-
+func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey, wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
 	var timesleep time.Duration
 	for {
 		keyref, err := re.GeneratingEncryptionKeys()
@@ -24,10 +26,10 @@ func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey) {
 		log.Println("RealTimeGenerateEncryptionKeys")
 		time.Sleep(timesleep)
 	}
-
 }
-func RealTimeGenerateRSAKey(transportacckey chan *rsa.PrivateKey) {
-
+func RealTimeGenerateRSAKey(transportacckey chan *rsa.PrivateKey, wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
 	var timesleep time.Duration
 	for {
 		keyref, err := ac.GenerateRSAKey()

@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"pet/iternal/s_reg-ident/str/account"
+	"sync"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -49,8 +50,9 @@ func (key *KeyAcc) GetPublicKey() []byte {
 	return keybyts
 }
 
-
 func (key *KeyAcc) Update(privateacckey *rsa.PrivateKey) {
+	mutex := sync.Mutex{}
+	mutex.Lock()
 	key.privatekey = privateacckey
-
+	mutex.Unlock()
 }

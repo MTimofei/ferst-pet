@@ -7,14 +7,18 @@ import (
 	"fmt"
 	"log"
 	"pet/integration_verification/api"
+	"sync"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func RealTimeGetKyeМiaGRPC(addrgrpc *string, keytransfer chan *rsa.PublicKey) {
+func RealTimeGetKyeМiaGRPC(addrgrpc *string, keytransfer chan *rsa.PublicKey, wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
 	var timeSlip time.Duration
+
 	for {
 		key, err := ResponsGRPC(addrgrpc)
 		if err != nil {
@@ -22,7 +26,7 @@ func RealTimeGetKyeМiaGRPC(addrgrpc *string, keytransfer chan *rsa.PublicKey) {
 			timeSlip = 5 * time.Second
 		} else {
 			timeSlip = time.Minute
-			log.Println("RealTimeUpdateKyeМiaGRPC", key)
+			log.Println("RealTimeUpdateKyeМiaGRPC")
 		}
 		keytransfer <- key
 		time.Sleep(timeSlip)
