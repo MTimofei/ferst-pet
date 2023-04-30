@@ -13,7 +13,7 @@ type PublicKey struct {
 
 func StartUpdate(addrGRPC *string, key *PublicKey, keytransfer chan *rsa.PublicKey) {
 	wg := &sync.WaitGroup{}
-
+	wg.Add(2)
 	go grpcclient.RealTimeGetKyeМiaGRPC(addrGRPC, keytransfer, wg)
 	go updatePublicKey(key, keytransfer, wg)
 	wg.Wait()
@@ -24,7 +24,6 @@ func (key *PublicKey) update(publiackey *rsa.PublicKey) {
 }
 
 func updatePublicKey(key *PublicKey, keytransfer chan *rsa.PublicKey, wg *sync.WaitGroup) {
-	wg.Add(1)
 	defer wg.Done()
 	for publickey := range keytransfer {
 		key.update(publickey)

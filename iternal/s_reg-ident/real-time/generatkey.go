@@ -11,7 +11,7 @@ import (
 )
 
 func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey, wg *sync.WaitGroup) {
-	wg.Add(1)
+
 	defer wg.Done()
 	var timesleep time.Duration
 	for {
@@ -28,7 +28,7 @@ func RealTimeGenerateEncryptionKeys(transportrefkey chan *ecdsa.PrivateKey, wg *
 	}
 }
 func RealTimeGenerateRSAKey(transportacckey chan *rsa.PrivateKey, wg *sync.WaitGroup) {
-	wg.Add(1)
+
 	defer wg.Done()
 	var timesleep time.Duration
 	for {

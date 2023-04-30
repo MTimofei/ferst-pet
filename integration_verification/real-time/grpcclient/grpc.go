@@ -15,7 +15,6 @@ import (
 )
 
 func RealTimeGetKyeМiaGRPC(addrgrpc *string, keytransfer chan *rsa.PublicKey, wg *sync.WaitGroup) {
-	wg.Add(1)
 	defer wg.Done()
 	var timeSlip time.Duration
 

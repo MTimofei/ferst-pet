@@ -9,7 +9,7 @@ import (
 
 func StartUpdataKey(con *web.Connect, transportrefkey chan *ecdsa.PrivateKey, transportacckey chan *rsa.PrivateKey) {
 	wg := &sync.WaitGroup{}
-
+	wg.Add(4)
 	go RealTimeGenerateEncryptionKeys(transportrefkey, wg)
 	go RealTimeGenerateRSAKey(transportacckey, wg)
 
