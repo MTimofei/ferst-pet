@@ -31,12 +31,3 @@ The refresh token is signed using the ES256 algorithm
 <h3> Safety</h3>
 Generating new keys at time intervals for each encryption algorithm<br>
 </p>
-<h2>In the plans for the future:</2>
-
-<h3>Communication</h3>
-Servers synchronization<br>
-
-</p>
-<h3> Safety</h3>
-Create a whitelist-blacklist system for jwt<br>
-</p>
